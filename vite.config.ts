@@ -3,8 +3,7 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default {
   plugins: [react()],
-  base: '/vite-quick-start/',
-  envDir: './env',
+  base: '/gemini-web-interface/',
   test: {
     globals: true,
     environment: 'jsdom',

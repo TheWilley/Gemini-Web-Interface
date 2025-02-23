@@ -1,28 +1,46 @@
-import { faRocket } from '@fortawesome/free-solid-svg-icons/faRocket';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import Wrapper from './view/Wrapper';
+import Layout from './view/Layout';
+import Sidebar from './view/Sidebar';
+import Main from './view/Main';
+import useChats from './hooks/useChats';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const {
+    chatsInfo,
+    activeChat,
+    isGeneratingAnswer,
+    newChat,
+    selectChat,
+    sendMessage,
+    clearChats,
+    exportChats,
+    importChats,
+    updateSelectModel,
+    selectedModel,
+  } = useChats();
 
   return (
-    <>
-      <div className='flex h-screen items-center justify-center'>
-        <div className='p-5'>
-          <h1 className='mb-5 text-5xl'>
-            Vite-Quick-Start <FontAwesomeIcon icon={faRocket} />
-          </h1>
-          <p> A Vite + React + Tailwind CSS + TypeScript quick start template.</p>
-          <br />
-          <button
-            onClick={() => setCount((count) => count + 1)}
-            className='m-2 rounded border bg-blue-300 p-3 transition hover:bg-blue-500 hover:text-white'
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </>
+    <Wrapper>
+      <Layout>
+        <Sidebar
+          chatsInfo={chatsInfo}
+          newChat={newChat}
+          selectChat={selectChat}
+          chatIsSelected={!!activeChat}
+          clearChats={clearChats}
+          exportChats={exportChats}
+          importChats={importChats}
+        />
+        <Main
+          activeChat={activeChat}
+          sendMessage={sendMessage}
+          isGeneratingAnswer={isGeneratingAnswer}
+          isLoading={false}
+          updateSelectModel={updateSelectModel}
+          selectedModel={selectedModel}
+        />
+      </Layout>
+    </Wrapper>
   );
 }
 
