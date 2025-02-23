@@ -16,7 +16,7 @@
   <a href="#todo">Todo</a> •
   <a href="#license">License</a>
 </p>
-  <img src=image.png>
+  <img src=screenshot.png>
 
 ## About
 
