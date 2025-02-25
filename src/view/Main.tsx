@@ -11,6 +11,7 @@ function Main({
   isGeneratingAnswer,
   isLoading,
   selectedModel,
+  models,
 }: {
   activeChat: Chat | undefined;
   sendMessage: (message: string) => void;
@@ -18,25 +19,13 @@ function Main({
   isGeneratingAnswer: boolean;
   isLoading: boolean;
   selectedModel: Chat['model'];
+  models: Chat['model'][];
 }) {
   return (
     <div className='relative flex w-full items-center justify-center'>
       <div className='absolute left-2 top-2'>
         <Dropdown
-          options={[
-            {
-              name: '2.0 Flash',
-              key: 'gemini-2.0-flash',
-            },
-            {
-              name: '2.0 Flash-Lite Preview',
-              key: 'gemini-2.0-flash-lite-preview-02-05',
-            },
-            {
-              name: '1.5 Flash',
-              key: 'gemini-1.5-flash',
-            },
-          ]}
+          options={models}
           onSelect={(selected) => {
             updateSelectModel(selected);
           }}

@@ -357,6 +357,7 @@ export default function useChats() {
     isGeneratingAnswer,
     isLoading,
     selectedModel,
+    models,
     newChat,
     selectChat,
     sendMessage,

@@ -9,6 +9,8 @@ function App() {
     chatsInfo,
     activeChat,
     isGeneratingAnswer,
+    selectedModel,
+    models,
     newChat,
     selectChat,
     sendMessage,
@@ -16,7 +18,6 @@ function App() {
     exportChats,
     importChats,
     updateSelectModel,
-    selectedModel,
   } = useChats();
 
   return (
@@ -38,6 +39,7 @@ function App() {
           isLoading={false}
           updateSelectModel={updateSelectModel}
           selectedModel={selectedModel}
+          models={models.current}
         />
       </Layout>
     </Wrapper>
