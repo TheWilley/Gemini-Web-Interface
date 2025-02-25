@@ -55,25 +55,38 @@ function MessageInput({
   }, [handleKeyPress]);
 
   return (
-    <div
-      className='mb-3 flex items-end border border-text p-1'
-      style={{ borderRadius, transition: 'border-radius 1s' }}
-    >
-      <textarea
-        ref={textareaRef}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        className={`flex-grow resize-none overflow-auto rounded-full bg-background p-3 text-text-strong outline-none`}
-        placeholder='Ask Gemini'
-        rows={1}
-        style={{ maxHeight: '150px' }}
-      />
-      {message.trim() && !isGeneratingAnswer && (
-        <Button onclick={handleSendMessage}>
-          <FontAwesomeIcon icon={faPaperPlane} />
-        </Button>
-      )}
-    </div>
+    <>
+      <div
+        className='mb-3 flex items-end border border-text p-1'
+        style={{ borderRadius, transition: 'border-radius 1s' }}
+      >
+        <textarea
+          ref={textareaRef}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className={`flex-grow resize-none overflow-auto rounded-full bg-background p-3 text-text-strong outline-none`}
+          placeholder='Ask Gemini'
+          rows={1}
+          style={{ maxHeight: '150px' }}
+        />
+        {message.trim() && !isGeneratingAnswer && (
+          <Button onclick={handleSendMessage}>
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </Button>
+        )}
+      </div>
+      <div className='mb-2 mt-2 text-center text-sm text-text opacity-80'>
+        Gemini can make mistakes, so double check the answers.{' '}
+        <a
+          href='https://github.com/TheWilley/Gemini-Web-Interface'
+          className='cursor-pointer underline'
+          target='_blank'
+        >
+          This GUI is open source
+        </a>
+        .
+      </div>
+    </>
   );
 }
 
