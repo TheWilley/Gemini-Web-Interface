@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from '../components/Button';
-import IconWithText from '../components/IconWithText';
+import IconWithElement from '../components/IconWithText';
 import classNames from '../utils/classNames';
 import HideableBlock from '../components/HideableBlock';
 import { ChatInfo } from '../global/types';
@@ -72,7 +72,7 @@ function Sidebar({
 
       <div className='mt-8'>
         <Button onclick={() => newChat()} disabled={!chatIsSelected} strong bold>
-          <IconWithText icon={faPlus} text='New Chat' hideText={isCollapsed} />
+          <IconWithElement icon={faPlus} text='New Chat' hideText={isCollapsed} />
         </Button>
       </div>
 
@@ -87,9 +87,20 @@ function Sidebar({
                   fillWidth
                   active={chatInfo.active}
                 >
-                  <IconWithText
+                  <IconWithElement
                     icon={faAlignLeft}
-                    text={chatInfo.name || 'Generating name...'}
+                    text={
+                      chatInfo.name || (
+                        <div className='max-w-full animate-pulse'>
+                          <div className='mb-2 block h-1 w-56 rounded-full bg-gray-300 font-sans text-5xl font-semibold leading-tight tracking-normal text-inherit antialiased'>
+                            &nbsp;
+                          </div>
+                          <div className='block h-1 w-72 rounded-full bg-gray-300 font-sans text-base font-light leading-relaxed text-inherit antialiased'>
+                            &nbsp;
+                          </div>
+                        </div>
+                      )
+                    }
                   />
                 </Button>
               </li>
@@ -101,15 +112,15 @@ function Sidebar({
       <div className='ml-3 mt-auto text-sm'>
         <HideableBlock isHidden={isCollapsed}>
           <Button onclick={clearChats}>
-            <IconWithText icon={faX} text={'Clear Chats'} />
+            <IconWithElement icon={faX} text={'Clear Chats'} />
           </Button>
           <br />
           <Button onclick={exportChats}>
-            <IconWithText icon={faFileExport} text={'Export Chats'} />
+            <IconWithElement icon={faFileExport} text={'Export Chats'} />
           </Button>
           <br />
           <Button onclick={() => document.getElementById('importChat')?.click()}>
-            <IconWithText icon={faFileImport} text={'Import Chats'} />
+            <IconWithElement icon={faFileImport} text={'Import Chats'} />
           </Button>
         </HideableBlock>
       </div>

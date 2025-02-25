@@ -1,12 +1,13 @@
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import { ReactNode } from 'react';
 
-function IconWithText({
+function IconWithElement({
   icon,
   text,
   hideText,
 }: {
   icon: FontAwesomeIconProps['icon'];
-  text: string;
+  text: ReactNode;
   hideText?: boolean;
 }) {
   return (
@@ -21,4 +22,4 @@ function IconWithText({
   );
 }
 
-export default IconWithText;
+export default IconWithElement;
