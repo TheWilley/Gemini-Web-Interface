@@ -1,0 +1,33 @@
+import React, { ReactNode } from 'react';
+import classNames from '../utils/classNames';
+
+interface TooltipProps {
+  text: string;
+  position: 'left' | 'right' | 'bottom' | 'top';
+  children: ReactNode;
+}
+
+const Tooltip: React.FC<TooltipProps> = ({ text, position, children }) => {
+  const tooltipPositionClasses = {
+    top: 'bottom-full mb-2 left-1/2 transform -translate-x-1/2',
+    right: 'left-full ml-2 top-1/2 transform -translate-y-1/2',
+    bottom: 'top-full mt-2 left-1/2 transform -translate-x-1/2',
+    left: 'right-full mr-2 top-1/2 transform -translate-y-1/2',
+  };
+
+  return (
+    <span className='group/tooltip relative inline-block'>
+      {children}
+      <span
+        className={classNames(
+          'absolute z-10 scale-75 rounded-md bg-gray-300 px-2 py-1 text-xs text-gray-900 opacity-0 transition-all group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100',
+          tooltipPositionClasses[position]
+        )}
+      >
+        {text}
+      </span>
+    </span>
+  );
+};
+
+export default Tooltip;
