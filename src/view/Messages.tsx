@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faCopy, faFingerprint } from '@fortawesome/free-solid-svg-icons';
 import geminiLogo from '../assets/gemini.png';
 import { useCallback } from 'react';
+import Tooltip from '../components/Tooltip';
 
 function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: boolean }) {
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
@@ -54,15 +55,21 @@ function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: bool
                 <>
                   <Markdown>{isLoading ? 'Creating message...' : message.text}</Markdown>
                   <div className='opacity-0 transition-opacity group-hover:opacity-100'>
-                    <Button onclick={() => copy(message, 'chat')}>
-                      <FontAwesomeIcon icon={faCopy} className='opacity-60' />
-                    </Button>
-                    <Button onclick={() => copy(message, 'id')}>
-                      <FontAwesomeIcon icon={faFingerprint} className='opacity-60' />
-                    </Button>
-                    <Button onclick={() => copy(message, 'time')}>
-                      <FontAwesomeIcon icon={faClock} className='opacity-60' />
-                    </Button>
+                    <Tooltip position='bottom' text='Copy text'>
+                      <Button onclick={() => copy(message, 'chat')}>
+                        <FontAwesomeIcon icon={faCopy} className='opacity-60' />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip position='bottom' text='Copy ID'>
+                      <Button onclick={() => copy(message, 'id')}>
+                        <FontAwesomeIcon icon={faFingerprint} className='opacity-60' />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip position='bottom' text='Copy timestamp'>
+                      <Button onclick={() => copy(message, 'time')}>
+                        <FontAwesomeIcon icon={faClock} className='opacity-60' />
+                      </Button>
+                    </Tooltip>
                   </div>
                 </>
               )}

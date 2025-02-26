@@ -13,6 +13,7 @@ import IconWithElement from '../components/IconWithText';
 import classNames from '../utils/classNames';
 import HideableBlock from '../components/HideableBlock';
 import { ChatInfo } from '../global/types';
+import Tooltip from '../components/Tooltip';
 
 function Sidebar({
   chatsInfo,
@@ -60,20 +61,24 @@ function Sidebar({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div>
-        <Button
-          onclick={() => {
-            setPermanentlyExpanded(!permantelyExpanded);
-            toggleSidebar();
-          }}
-        >
-          <FontAwesomeIcon icon={faBars} className='h-4 w-4' />
-        </Button>
+        <Tooltip position='bottom' text={permantelyExpanded ? 'Collapse' : 'Keep open'}>
+          <Button
+            onclick={() => {
+              setPermanentlyExpanded(!permantelyExpanded);
+              toggleSidebar();
+            }}
+          >
+            <FontAwesomeIcon icon={faBars} className='h-4 w-4' />
+          </Button>
+        </Tooltip>
       </div>
 
       <div className='mt-8'>
-        <Button onclick={() => newChat()} disabled={!chatIsSelected} strong bold>
-          <IconWithElement icon={faPlus} text='New Chat' hideText={isCollapsed} />
-        </Button>
+        <Tooltip position='bottom' text='New chat'>
+          <Button onclick={() => newChat()} disabled={!chatIsSelected} strong bold>
+            <IconWithElement icon={faPlus} text='New Chat' hideText={isCollapsed} />
+          </Button>
+        </Tooltip>
       </div>
 
       <div className='mt-8 flex-grow text-sm'>
@@ -82,27 +87,32 @@ function Sidebar({
           <ul className='m-0 list-none'>
             {chatsInfo.map((chatInfo) => (
               <li key={chatInfo.id}>
-                <Button
-                  onclick={() => selectChat(chatInfo.id)}
-                  fillWidth
-                  active={chatInfo.active}
+                <Tooltip
+                  position='right'
+                  text={chatInfo.name || 'Generating chat name...'}
                 >
-                  <IconWithElement
-                    icon={faAlignLeft}
-                    text={
-                      chatInfo.name || (
-                        <div className='max-w-full animate-pulse'>
-                          <div className='mb-2 block h-1 w-56 rounded-full bg-gray-300 font-sans text-5xl font-semibold leading-tight tracking-normal text-inherit antialiased'>
-                            &nbsp;
+                  <Button
+                    onclick={() => selectChat(chatInfo.id)}
+                    fillWidth
+                    active={chatInfo.active}
+                  >
+                    <IconWithElement
+                      icon={faAlignLeft}
+                      text={
+                        chatInfo.name || (
+                          <div className='max-w-full animate-pulse'>
+                            <div className='mb-2 block h-1 w-56 rounded-full bg-gray-300 font-sans text-5xl font-semibold leading-tight tracking-normal text-inherit antialiased'>
+                              &nbsp;
+                            </div>
+                            <div className='block h-1 w-72 rounded-full bg-gray-300 font-sans text-base font-light leading-relaxed text-inherit antialiased'>
+                              &nbsp;
+                            </div>
                           </div>
-                          <div className='block h-1 w-72 rounded-full bg-gray-300 font-sans text-base font-light leading-relaxed text-inherit antialiased'>
-                            &nbsp;
-                          </div>
-                        </div>
-                      )
-                    }
-                  />
-                </Button>
+                        )
+                      }
+                    />
+                  </Button>
+                </Tooltip>
               </li>
             ))}
           </ul>
