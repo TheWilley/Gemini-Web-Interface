@@ -22,7 +22,7 @@ function Tooltip({
       {children}
       <span
         className={classNames(
-          'absolute z-10 scale-75 rounded-md bg-gray-300 px-2 py-1 text-xs text-gray-900 opacity-0 transition-all group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100',
+          'absolute z-10 w-fit scale-75 whitespace-nowrap rounded-md bg-gray-300 px-2 py-1 text-xs text-gray-900 opacity-0 transition-all group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100',
           tooltipPositionClasses[position]
         )}
       >
