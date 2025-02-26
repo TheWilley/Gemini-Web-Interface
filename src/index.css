@@ -14,3 +14,9 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+:root {
+  --animate-duration: 600ms;
+  --toastify-toast-background: '#e3e3e3';
+  --toastify-text-color-light: #1d1d1d;
+}

@@ -45,7 +45,7 @@ function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: bool
                 'group break-words rounded-2xl rounded-tr-sm p-3',
                 message.sender === 'self'
                   ? 'max-w-96 justify-end bg-overlay text-text-strong'
-                  : 'prose prose-invert prose-gray bg-backgroun max-w-full leading-6'
+                  : 'bg-backgroun prose prose-gray prose-invert max-w-full leading-6'
               )}
             >
               {message.sender === 'self' ? (

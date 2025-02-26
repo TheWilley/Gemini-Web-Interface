@@ -3,6 +3,7 @@ import Layout from './view/Layout';
 import Sidebar from './view/Sidebar';
 import Main from './view/Main';
 import useChats from './hooks/useChats';
+import Notification from './components/Notification';
 
 function App() {
   const {
@@ -42,6 +43,7 @@ function App() {
           models={models.current}
         />
       </Layout>
+      <Notification />
     </Wrapper>
   );
 }
