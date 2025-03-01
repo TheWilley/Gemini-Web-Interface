@@ -54,8 +54,8 @@ function Sidebar({
   return (
     <div
       className={classNames(
-        'flex h-screen flex-col overflow-hidden bg-overlay p-3 transition-all duration-300 ease-in-out',
-        isCollapsed ? 'w-16' : 'w-2/6'
+        'flex h-screen flex-col bg-overlay p-3 transition-all duration-300 ease-in-out',
+        isCollapsed ? 'w-16' : 'w-96'
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -90,6 +90,7 @@ function Sidebar({
                 <Tooltip
                   position='right'
                   text={chatInfo.name || 'Generating chat name...'}
+                  classes='w-full'
                 >
                   <Button
                     onclick={() => selectChat(chatInfo.id)}

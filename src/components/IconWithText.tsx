@@ -14,7 +14,7 @@ function IconWithElement({
     <span className='flex items-center'>
       <FontAwesomeIcon icon={icon} />
       {!hideText && (
-        <span className='ml-5 whitespace-nowrap transition-opacity duration-300'>
+        <span className='ml-5 overflow-hidden text-ellipsis whitespace-nowrap transition-opacity duration-300'>
           {text}
         </span>
       )}

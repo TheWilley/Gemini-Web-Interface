@@ -5,10 +5,12 @@ function Tooltip({
   text,
   position,
   children,
+  classes,
 }: {
   text: string;
   position: 'left' | 'right' | 'bottom' | 'top';
   children: ReactNode;
+  classes?: string;
 }) {
   const tooltipPositionClasses = {
     top: 'bottom-full mb-2 left-1/2 transform -translate-x-1/2',
@@ -18,7 +20,7 @@ function Tooltip({
   };
 
   return (
-    <span className='group/tooltip relative inline-block'>
+    <span className={classNames('group/tooltip relative inline-block', classes)}>
       {children}
       <span
         className={classNames(
