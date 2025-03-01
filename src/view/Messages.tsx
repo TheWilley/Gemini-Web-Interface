@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faCopy, faFingerprint } from '@fortawesome/free-solid-svg-icons';
 import geminiLogo from '../assets/gemini.png';
 import { useCallback } from 'react';
+import { toast } from 'react-toastify';
 import Tooltip from '../components/Tooltip';
 
 function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: boolean }) {
@@ -13,16 +14,19 @@ function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: bool
     switch (type) {
       case 'chat': {
         navigator.clipboard.writeText(message.text);
+        toast('Copied text to clipboard');
         break;
       }
 
       case 'id': {
         navigator.clipboard.writeText(message.id);
+        toast('Copied ID to clipboard');
         break;
       }
 
       case 'time': {
         navigator.clipboard.writeText(String(message.createdAt));
+        toast('Copied time to clipboard');
       }
     }
   }, []);
