@@ -14,8 +14,6 @@ export default function constructGeminiPayload(chat: Chat, numTrailingItems: num
     numTrailingItems += 1;
   }
 
-  console.log(numTrailingItems);
-
   const payload: GeminiPayload = {
     contents: chat.messages
       .slice(Math.max(chat.messages.length - numTrailingItems))
