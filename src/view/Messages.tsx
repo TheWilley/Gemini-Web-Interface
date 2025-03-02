@@ -10,7 +10,7 @@ import {
   faRotateRight,
 } from '@fortawesome/free-solid-svg-icons';
 import geminiLogo from '../assets/gemini.png';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import Tooltip from '../components/Tooltip';
 
@@ -23,6 +23,7 @@ function Messages({
   isLoading: boolean;
   regenerate: () => void;
 }) {
+  const scrollToBottomRef = useRef<HTMLElement | null>();
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
     switch (type) {
       case 'chat': {
@@ -43,6 +44,10 @@ function Messages({
       }
     }
   }, []);
+
+  useEffect(() => {
+    scrollToBottomRef.current?.scrollIntoView();
+  });
 
   return (
     <>
@@ -101,6 +106,7 @@ function Messages({
           </div>
         </div>
       ))}
+      <div id='scollToBottom' ref={scrollToBottomRef} />
     </>
   );
 }
