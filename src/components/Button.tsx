@@ -8,6 +8,7 @@ function Button({
   disabled,
   strong,
   bold,
+  classes,
 }: {
   onclick: () => void;
   children: React.ReactNode;
@@ -16,6 +17,7 @@ function Button({
   disabled?: boolean;
   strong?: boolean;
   bold?: boolean;
+  classes?: string;
 }) {
   return (
     <button
@@ -26,7 +28,8 @@ function Button({
         strong && 'text-text-strong',
         bold && 'font-bold',
         active && '!bg-primary text-text-strong',
-        disabled && 'cursor-default !bg-[#202122] text-text'
+        disabled && 'cursor-default !bg-[#202122] text-text',
+        classes
       )}
     >
       <span className={disabled ? 'opacity-40' : 'opacity-100'}>{children}</span>

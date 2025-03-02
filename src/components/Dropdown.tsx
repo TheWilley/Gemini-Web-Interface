@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import classNames from '../utils/classNames';
 
 function Dropdown({
   options,
   onSelect,
   value,
+  classes,
 }: {
   options: {
     name: string;
@@ -14,6 +16,7 @@ function Dropdown({
   }[];
   onSelect: (selected: string) => void;
   value: string | undefined;
+  classes?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -34,7 +37,7 @@ function Dropdown({
   };
 
   return (
-    <div className='relative'>
+    <div className={classNames('relative', classes)}>
       <Button onclick={toggleDropdown} bold strong>
         {selectedOption || 'Select an option'}
         <span className={`ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`}>

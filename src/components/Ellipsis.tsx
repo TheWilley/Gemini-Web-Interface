@@ -3,16 +3,19 @@ import Button from '../components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import useOutsideAlerter from '../hooks/useOutsideAlerter';
+import classNames from '../utils/classNames';
 
 function Ellipsis({
   options,
   onClick,
+  classes,
 }: {
   options: {
     name: string;
     key: string;
   }[];
   onClick: (selected: string) => void;
+  classes?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
@@ -30,7 +33,7 @@ function Ellipsis({
   };
 
   return (
-    <span className='relative' ref={wrapperRef}>
+    <span className={classNames('relative', classes)} ref={wrapperRef}>
       <div className='absolute top-1/2 -translate-y-1/2'>
         <Button onclick={toggleEllipsis} bold strong>
           <FontAwesomeIcon icon={faEllipsisVertical} />
