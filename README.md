@@ -57,7 +57,7 @@ $ npm run preview
 - [ ] Add support for uploading files
 - [ ] Add support for image rendering in chat
 - [ ] Add more comments and clean up code.
-- [ ] Rename and delete induvidual chats
+- [ x ] Rename and delete induvidual chats
 - [ ] Polish everything
 
 ## License

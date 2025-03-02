@@ -350,6 +350,41 @@ export default function useChats() {
     }
   };
 
+  /**
+   * Deletes a chat.
+   * @param chatId The id of the chat to delete.
+   */
+  const deleteChat = (chatId: string) => {
+    if (confirm(`Are you sure you want to delete chat?`))
+      setChats((draft) => {
+        const foundChat = draft.find((c) => c.id === chatId);
+
+        if (foundChat) {
+          draft.splice(draft.indexOf(foundChat), 1);
+        }
+      });
+  };
+
+  /**
+   * Edits a chat name.
+   * @param chatId The id of the chat to edit.
+   */
+  const editChatName = (chatId: string) => {
+    const newName = prompt('Enter new name for chat');
+    if (!newName || newName.trim() === '') {
+      alert("Name can't be empty!");
+    } else if (newName && newName.length > 200) {
+      alert("Name can't be over 200 characters!");
+    } else if (newName) {
+      setChats((draft) => {
+        const foundChat = draft.find((c) => c.id === chatId);
+        if (foundChat) {
+          foundChat.name = newName;
+        }
+      });
+    }
+  };
+
   return {
     chats,
     activeChat,
@@ -365,5 +400,7 @@ export default function useChats() {
     exportChats,
     importChats,
     updateSelectModel,
+    deleteChat,
+    editChatName,
   };
 }

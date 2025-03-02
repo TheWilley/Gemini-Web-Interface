@@ -4,7 +4,9 @@ import {
   faBars,
   faFileExport,
   faFileImport,
+  faPen,
   faPlus,
+  faTrash,
   faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +16,7 @@ import classNames from '../utils/classNames';
 import HideableBlock from '../components/HideableBlock';
 import { ChatInfo } from '../global/types';
 import Tooltip from '../components/Tooltip';
+import Ellipsis from '../components/Ellipsis';
 
 function Sidebar({
   chatsInfo,
@@ -23,6 +26,8 @@ function Sidebar({
   clearChats,
   exportChats,
   importChats,
+  deleteChat,
+  editChatName,
 }: {
   chatsInfo: ChatInfo[];
   newChat: () => void;
@@ -31,6 +36,8 @@ function Sidebar({
   clearChats: () => void;
   exportChats: () => void;
   importChats: (file: File) => void;
+  deleteChat: (chatId: string) => void;
+  editChatName: (chatId: string) => void;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -86,12 +93,15 @@ function Sidebar({
           <h2 className='mb-2 ml-2 text-sm font-bold text-text-strong'>Chats</h2>
           <ul className='m-0 list-none'>
             {chatsInfo.map((chatInfo) => (
-              <li key={chatInfo.id}>
+              <li
+                key={chatInfo.id}
+                className='group/options grid grid-cols-[90%_10%] gap-2'
+              >
                 <Tooltip
                   position='right'
                   text={chatInfo.name || 'Generating chat name...'}
                   classes='w-full'
-                  offsetX={20}
+                  offsetX={30}
                 >
                   <Button
                     onclick={() => selectChat(chatInfo.id)}
@@ -115,6 +125,25 @@ function Sidebar({
                     />
                   </Button>
                 </Tooltip>
+                <Ellipsis
+                  options={[
+                    {
+                      key: 'delete',
+                      display: <IconWithElement icon={faTrash} text={'Delete'} />,
+                      onclick() {
+                        deleteChat(chatInfo.id);
+                      },
+                    },
+                    {
+                      key: 'edit',
+                      display: <IconWithElement icon={faPen} text={'Edit'} />,
+                      onclick() {
+                        editChatName(chatInfo.id);
+                      },
+                    },
+                  ]}
+                  classes='group-hover/options:inline-block hidden'
+                />
               </li>
             ))}
           </ul>

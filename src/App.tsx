@@ -19,6 +19,8 @@ function App() {
     exportChats,
     importChats,
     updateSelectModel,
+    deleteChat,
+    editChatName,
   } = useChats();
 
   return (
@@ -32,6 +34,8 @@ function App() {
           clearChats={clearChats}
           exportChats={exportChats}
           importChats={importChats}
+          deleteChat={deleteChat}
+          editChatName={editChatName}
         />
         <Main
           activeChat={activeChat}
