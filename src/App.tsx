@@ -12,6 +12,7 @@ function App() {
     isGeneratingAnswer,
     selectedModel,
     models,
+    viewOptions,
     newChat,
     selectChat,
     sendMessage,
@@ -22,6 +23,7 @@ function App() {
     deleteChat,
     editChatName,
     regenerate,
+    toggleViewOptions,
   } = useChats();
 
   return (
@@ -31,12 +33,13 @@ function App() {
           chatsInfo={chatsInfo}
           newChat={newChat}
           selectChat={selectChat}
-          chatIsSelected={!!activeChat}
+          chatIsSelected={!!activeChat || viewOptions}
           clearChats={clearChats}
           exportChats={exportChats}
           importChats={importChats}
           deleteChat={deleteChat}
           editChatName={editChatName}
+          toggleViewOptions={toggleViewOptions}
         />
         <Main
           activeChat={activeChat}
@@ -47,6 +50,7 @@ function App() {
           selectedModel={selectedModel}
           models={models.current}
           regenerate={regenerate}
+          viewOptions={viewOptions}
         />
       </Layout>
       <Notification />

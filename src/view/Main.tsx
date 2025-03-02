@@ -3,6 +3,7 @@ import Messages from './Messages';
 import MessageInput from '../components/MessageInput';
 import ChatHeader from './ChatHeader';
 import Dropdown from '../components/Dropdown';
+import Options from './Options';
 
 function Main({
   activeChat,
@@ -12,6 +13,7 @@ function Main({
   isLoading,
   selectedModel,
   models,
+  viewOptions,
   regenerate,
 }: {
   activeChat: Chat | undefined;
@@ -21,6 +23,7 @@ function Main({
   isLoading: boolean;
   selectedModel: Chat['model'];
   models: Chat['model'][];
+  viewOptions: boolean;
   regenerate: () => void;
 }) {
   return (
@@ -36,7 +39,9 @@ function Main({
       </div>
       <div className='flex h-screen w-full max-w-[840px] flex-col pl-3 pr-3 pt-12'>
         <div className='no-scrollbar flex-grow overflow-auto p-5'>
-          {activeChat ? (
+          {viewOptions ? (
+            <Options />
+          ) : activeChat ? (
             <Messages
               activeChat={activeChat}
               isLoading={isLoading}
@@ -46,7 +51,12 @@ function Main({
             <ChatHeader />
           )}
         </div>
-        <MessageInput sendMessage={sendMessage} isGeneratingAnswer={isGeneratingAnswer} />
+        {!viewOptions && (
+          <MessageInput
+            sendMessage={sendMessage}
+            isGeneratingAnswer={isGeneratingAnswer}
+          />
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   faAlignLeft,
   faBars,
+  faCog,
   faFileExport,
   faFileImport,
   faPen,
@@ -28,6 +29,7 @@ function Sidebar({
   importChats,
   deleteChat,
   editChatName,
+  toggleViewOptions,
 }: {
   chatsInfo: ChatInfo[];
   newChat: () => void;
@@ -38,6 +40,7 @@ function Sidebar({
   importChats: (file: File) => void;
   deleteChat: (chatId: string) => void;
   editChatName: (chatId: string) => void;
+  toggleViewOptions: () => void;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -162,6 +165,10 @@ function Sidebar({
           <br />
           <Button onclick={() => document.getElementById('importChat')?.click()}>
             <IconWithElement icon={faFileImport} text={'Import Chats'} />
+          </Button>
+          <br />
+          <Button onclick={toggleViewOptions}>
+            <IconWithElement icon={faCog} text={'Settings'} />
           </Button>
         </HideableBlock>
       </div>

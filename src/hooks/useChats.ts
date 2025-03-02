@@ -14,7 +14,8 @@ import createChatNameFromMessage from '../utils/createChatNameFromMessage';
 /*/
 
 export default function useChats() {
-  // Normal States
+  /* --===== Normal States =====-- */
+
   const [chats, setChats] = useImmer<Chat[]>(() => {
     const savedChats = localStorage.getItem('chats');
     return savedChats ? JSON.parse(savedChats) : [];
@@ -40,7 +41,8 @@ export default function useChats() {
     },
   ]);
 
-  // Memorized States
+  /* --===== Memorized States =====-- */
+
   const activeChat = useMemo(() => chats.find((chat) => chat.active === true), [chats]);
   const chatsInfo = useMemo<ChatInfo[]>(
     () =>
@@ -49,6 +51,12 @@ export default function useChats() {
       }),
     [chats]
   );
+
+  /* --===== Options =====-- */
+
+  const [viewOptions, setViewOptions] = useState(true);
+
+  /* --===== Effects =====-- */
 
   useEffect(() => {
     localStorage.setItem('chats', JSON.stringify(chats));
@@ -60,11 +68,18 @@ export default function useChats() {
     }
   }, [activeChat]);
 
+  /* --===== Functions =====-- */
+
+  const toggleViewOptions = () => {
+    setViewOptions((prev) => !prev);
+  };
+
   /**
    * Alias for `unactivateAllChats`.
    */
   const newChat = () => {
     unactivateAllChats();
+    setViewOptions(false);
   };
 
   /**
@@ -108,6 +123,7 @@ export default function useChats() {
         active: chat.id === chatId,
       }))
     );
+    setViewOptions(false);
   };
 
   /**
@@ -407,6 +423,7 @@ export default function useChats() {
     isLoading,
     selectedModel,
     models,
+    viewOptions,
     newChat,
     selectChat,
     sendMessage,
@@ -417,5 +434,6 @@ export default function useChats() {
     deleteChat,
     editChatName,
     regenerate,
+    toggleViewOptions,
   };
 }
