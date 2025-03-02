@@ -23,7 +23,7 @@ function Messages({
   isLoading: boolean;
   regenerate: () => void;
 }) {
-  const scrollToBottomRef = useRef<HTMLElement | null>();
+  const scrollToBottomRef = useRef<null | HTMLDivElement>(null);
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
     switch (type) {
       case 'chat': {
