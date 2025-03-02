@@ -1,7 +1,8 @@
-import { faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/Input';
 import Tooltip from '../components/Tooltip';
 import { Options } from '../global/types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Settings({
   options,
@@ -13,12 +14,7 @@ function Settings({
   return (
     <div className='w-96'>
       <h1 className='mb-6 text-xl font-semibold'>Settings</h1>
-
-      <Tooltip
-        position='right'
-        text='How many previous messages the AI remembers when generating its next response'
-        offsetX={15}
-      >
+      <div className='flex items-center gap-3'>
         <Input
           type='number'
           value={options.numRememberPreviousMessages}
@@ -29,7 +25,15 @@ function Settings({
           name=''
           minValue={2}
         />
-      </Tooltip>
+        <Tooltip
+          position='right'
+          text='How many previous messages the AI remembers when generating its next response'
+          offsetX={15}
+          maxWidth={150}
+        >
+          <FontAwesomeIcon icon={faQuestionCircle} />
+        </Tooltip>
+      </div>
     </div>
   );
 }
