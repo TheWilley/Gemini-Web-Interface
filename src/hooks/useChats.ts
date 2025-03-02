@@ -147,7 +147,7 @@ export default function useChats() {
     // Construct gemeni request
     const [url, init] = constructGeminiRequest(
       import.meta.env.VITE_GEMINI_API_KEY,
-      constructGeminiPayload(chat),
+      constructGeminiPayload(chat, 8),
       selectedModel.key,
       true
     );
