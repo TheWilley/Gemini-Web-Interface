@@ -146,6 +146,7 @@ function Sidebar({
                     },
                   ]}
                   classes='group-hover/options:inline-block hidden'
+                  onclick={() => setPermanentlyExpanded(true)}
                 />
               </li>
             ))}

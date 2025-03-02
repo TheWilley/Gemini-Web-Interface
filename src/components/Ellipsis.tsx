@@ -7,6 +7,7 @@ import classNames from '../utils/classNames';
 
 function Ellipsis({
   options,
+  onclick,
   classes,
 }: {
   options: {
@@ -14,6 +15,7 @@ function Ellipsis({
     key: string;
     onclick: () => void;
   }[];
+  onclick: () => void;
   classes?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +34,7 @@ function Ellipsis({
   };
 
   return (
-    <span className='relative' ref={wrapperRef}>
+    <span className='relative' ref={wrapperRef} onClick={onclick}>
       <div className={classNames('absolute top-1/2 -translate-y-1/2', classes)}>
         <Button onclick={toggleEllipsis} bold strong>
           <FontAwesomeIcon icon={faEllipsisVertical} />
