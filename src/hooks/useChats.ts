@@ -403,7 +403,7 @@ export default function useChats() {
       setSelectedModel(targetModel);
     }
 
-    if (activeChat) {
+    if (activeChat && activeChat.model.key !== modelKey) {
       newChat();
     }
   };
