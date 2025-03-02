@@ -111,6 +111,20 @@ export default function useChats() {
   };
 
   /**
+   * Generates a new answer for the last send message.
+   */
+  const regenerate = () => {
+    const chat = activeChat || createChat();
+    const sentMessage = chat.messages[chat.messages.length - 2].text;
+    const newChat = produce(chat, (draft) => {
+      draft.messages.splice(chat.messages.length - 2, 2);
+    });
+
+    const chatWithUserMessage = addMessageToChat(newChat, sentMessage, 'self');
+    fetchAnswer(chatWithUserMessage);
+  };
+
+  /**
    * Sends a message to the AI.
    * @param message The message to send.
    */
@@ -402,5 +416,6 @@ export default function useChats() {
     updateSelectModel,
     deleteChat,
     editChatName,
+    regenerate,
   };
 }

@@ -12,6 +12,7 @@ function Main({
   isLoading,
   selectedModel,
   models,
+  regenerate,
 }: {
   activeChat: Chat | undefined;
   sendMessage: (message: string) => void;
@@ -20,6 +21,7 @@ function Main({
   isLoading: boolean;
   selectedModel: Chat['model'];
   models: Chat['model'][];
+  regenerate: () => void;
 }) {
   return (
     <div className='relative flex w-full items-center justify-center'>
@@ -35,7 +37,11 @@ function Main({
       <div className='flex h-screen w-full max-w-[840px] flex-col pl-3 pr-3 pt-12'>
         <div className='no-scrollbar flex-grow overflow-auto p-5'>
           {activeChat ? (
-            <Messages activeChat={activeChat} isLoading={isLoading} />
+            <Messages
+              activeChat={activeChat}
+              isLoading={isLoading}
+              regenerate={regenerate}
+            />
           ) : (
             <ChatHeader />
           )}

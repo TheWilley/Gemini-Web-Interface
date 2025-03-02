@@ -21,6 +21,7 @@ function App() {
     updateSelectModel,
     deleteChat,
     editChatName,
+    regenerate,
   } = useChats();
 
   return (
@@ -45,6 +46,7 @@ function App() {
           updateSelectModel={updateSelectModel}
           selectedModel={selectedModel}
           models={models.current}
+          regenerate={regenerate}
         />
       </Layout>
       <Notification />

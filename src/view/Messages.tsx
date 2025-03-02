@@ -3,13 +3,26 @@ import { Chat, Message } from '../global/types';
 import classNames from '../utils/classNames';
 import Button from '../components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faCopy, faFingerprint } from '@fortawesome/free-solid-svg-icons';
+import {
+  faClock,
+  faCopy,
+  faFingerprint,
+  faRotateRight,
+} from '@fortawesome/free-solid-svg-icons';
 import geminiLogo from '../assets/gemini.png';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import Tooltip from '../components/Tooltip';
 
-function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: boolean }) {
+function Messages({
+  activeChat,
+  isLoading,
+  regenerate,
+}: {
+  activeChat: Chat;
+  isLoading: boolean;
+  regenerate: () => void;
+}) {
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
     switch (type) {
       case 'chat': {
@@ -33,7 +46,7 @@ function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: bool
 
   return (
     <>
-      {activeChat.messages.map((message) => (
+      {activeChat.messages.map((message, index) => (
         <div
           key={message.id}
           className={classNames(
@@ -74,6 +87,13 @@ function Messages({ activeChat, isLoading }: { activeChat: Chat; isLoading: bool
                         <FontAwesomeIcon icon={faClock} className='opacity-60' />
                       </Button>
                     </Tooltip>
+                    {index === activeChat.messages.length - 1 && (
+                      <Tooltip position='bottom' text='Regenerate'>
+                        <Button onclick={() => regenerate()}>
+                          <FontAwesomeIcon icon={faRotateRight} className='opacity-60' />
+                        </Button>
+                      </Tooltip>
+                    )}
                   </div>
                 </>
               )}
