@@ -34,6 +34,9 @@ If you have to pick, use Googles official website over this.
 
 ## Usage
 
+> [!CAUTION]
+> Do not upload the build site to any public domain, as your API key is exposed in the compiled Javascript.
+
 Before proceeding, rename `.env.example` to `.env` and set the `VITE_GEMINI_API_KEY` variable to your API key. You can get one on [Google's dev platform](https://ai.google.dev/gemini-api/docs/api-key).
 
 ```
