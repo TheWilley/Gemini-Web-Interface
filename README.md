@@ -37,6 +37,12 @@ If you have to pick, use Googles official website over this.
 Before proceeding, rename `.env.example` to `.env` and set the `VITE_GEMINI_API_KEY` variable to your API key. You can get one on [Google's dev platform](https://ai.google.dev/gemini-api/docs/api-key).
 
 ```
+# Clone this repo
+git clone https://github.com/TheWilley/Gemini-Web-Interface
+
+# CD into repo
+cd Gemini-Web-Interface
+
 # Install dependencies
 $ npm i
 
