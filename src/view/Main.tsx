@@ -2,7 +2,7 @@ import { Chat } from '../global/types';
 import Messages from './Messages';
 import MessageInput from '../components/MessageInput';
 import ChatHeader from './ChatHeader';
-import Dropdown from './Dropdown';
+import Dropdown from '../components/Dropdown';
 
 function Main({
   activeChat,
