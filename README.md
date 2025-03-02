@@ -57,7 +57,7 @@ $ npm run preview
 - [ ] Add support for uploading files
 - [ ] Add support for image rendering in chat
 - [ ] Add more comments and clean up code.
-- [x] Rename and delete induvidual chats
+- [x] Rename and delete induvidual chats ([47a7a71](https://github.com/TheWilley/Gemini-Web-Interface/commit/47a7a712e32153193cda0b7f6192146c9b717c6c))
 - [ ] Polish everything
 
 ## License
