@@ -54,7 +54,7 @@ export default function useChats() {
 
   /* --===== Options =====-- */
 
-  const [viewOptions, setViewOptions] = useState(true);
+  const [viewOptions, setViewOptions] = useState(false);
   const [options, setOptions] = useImmer<Options>(() => {
     const savedOptions = localStorage.getItem('options');
     return savedOptions
