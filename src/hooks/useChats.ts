@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Chat, ChatInfo } from '../global/types';
+import { Chat, ChatInfo, Options } from '../global/types';
 import { useImmer } from 'use-immer';
 import { produce } from 'immer';
 import constructGeminiRequest from '../utils/constructGeminiRequest';
@@ -55,12 +55,24 @@ export default function useChats() {
   /* --===== Options =====-- */
 
   const [viewOptions, setViewOptions] = useState(true);
+  const [options, setOptions] = useImmer<Options>(() => {
+    const savedOptions = localStorage.getItem('options');
+    return savedOptions
+      ? JSON.parse(savedOptions)
+      : {
+          numRememberPreviousMessages: '5',
+        };
+  });
 
   /* --===== Effects =====-- */
 
   useEffect(() => {
     localStorage.setItem('chats', JSON.stringify(chats));
   }, [chats]);
+
+  useEffect(() => {
+    localStorage.setItem('options', JSON.stringify(options));
+  }, [options]);
 
   useEffect(() => {
     if (activeChat) {
@@ -70,6 +82,20 @@ export default function useChats() {
 
   /* --===== Functions =====-- */
 
+  /**
+   * Updates a option.
+   * @param target The key of the option to update.
+   * @param value Thw new value of the option.
+   */
+  const updateOption = (target: string, value: string) => {
+    setOptions((draft) => {
+      draft[target as keyof typeof options] = value;
+    });
+  };
+
+  /**
+   * Toggles options view.
+   */
   const toggleViewOptions = () => {
     setViewOptions((prev) => !prev);
   };
@@ -163,7 +189,7 @@ export default function useChats() {
     // Construct gemeni request
     const [url, init] = constructGeminiRequest(
       import.meta.env.VITE_GEMINI_API_KEY,
-      constructGeminiPayload(chat, 8),
+      constructGeminiPayload(chat, parseInt(options.numRememberPreviousMessages)),
       selectedModel.key,
       true
     );
@@ -324,6 +350,7 @@ export default function useChats() {
     const exportData = {
       id: 'geminiChat',
       chats: chats,
+      options: options,
     };
 
     const dataStr = JSON.stringify(exportData, null, 2);
@@ -353,6 +380,7 @@ export default function useChats() {
 
         if (parsedData.id === 'geminiChat' && Array.isArray(parsedData.chats)) {
           setChats(parsedData.chats);
+          setOptions(parsedData.options);
         } else {
           alert('Invalid file format or missing unique identifier.');
         }
@@ -424,6 +452,7 @@ export default function useChats() {
     selectedModel,
     models,
     viewOptions,
+    options,
     newChat,
     selectChat,
     sendMessage,
@@ -435,5 +464,6 @@ export default function useChats() {
     editChatName,
     regenerate,
     toggleViewOptions,
+    updateOption,
   };
 }

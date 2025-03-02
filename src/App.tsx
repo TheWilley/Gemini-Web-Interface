@@ -13,6 +13,7 @@ function App() {
     selectedModel,
     models,
     viewOptions,
+    options,
     newChat,
     selectChat,
     sendMessage,
@@ -24,6 +25,7 @@ function App() {
     editChatName,
     regenerate,
     toggleViewOptions,
+    updateOption,
   } = useChats();
 
   return (
@@ -51,6 +53,8 @@ function App() {
           models={models.current}
           regenerate={regenerate}
           viewOptions={viewOptions}
+          options={options}
+          updateOption={updateOption}
         />
       </Layout>
       <Notification />

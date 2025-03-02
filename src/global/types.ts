@@ -39,3 +39,7 @@ export type Message = {
   createdAt: number;
   sender: 'self' | 'ai';
 };
+
+export type Options = {
+  numRememberPreviousMessages: string;
+};

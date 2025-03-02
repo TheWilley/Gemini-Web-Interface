@@ -1,9 +1,9 @@
-import { Chat } from '../global/types';
+import { Chat, Options } from '../global/types';
 import Messages from './Messages';
 import MessageInput from '../components/MessageInput';
 import ChatHeader from './ChatHeader';
 import Dropdown from '../components/Dropdown';
-import Options from './Options';
+import Settings from './Settings';
 
 function Main({
   activeChat,
@@ -14,6 +14,8 @@ function Main({
   selectedModel,
   models,
   viewOptions,
+  options,
+  updateOption,
   regenerate,
 }: {
   activeChat: Chat | undefined;
@@ -24,6 +26,8 @@ function Main({
   selectedModel: Chat['model'];
   models: Chat['model'][];
   viewOptions: boolean;
+  options: Options;
+  updateOption: (target: string, value: string) => void;
   regenerate: () => void;
 }) {
   return (
@@ -42,7 +46,7 @@ function Main({
       <div className='flex h-screen w-full max-w-[840px] flex-col pl-3 pr-3 pt-12'>
         <div className='no-scrollbar flex-grow overflow-auto p-5'>
           {viewOptions ? (
-            <Options />
+            <Settings options={options} updateOption={updateOption} />
           ) : activeChat ? (
             <Messages
               activeChat={activeChat}
