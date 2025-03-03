@@ -411,11 +411,9 @@ export default function useChats() {
    */
   const editChatName = (chatId: string) => {
     const newName = prompt('Enter new name for chat');
-    if (!newName || newName.trim() === '') {
-      alert("Name can't be empty!");
-    } else if (newName && newName.length > 200) {
+    if (newName && newName.length > 200) {
       alert("Name can't be over 200 characters!");
-    } else if (newName) {
+    } else if (newName && newName.trim() !== '') {
       setChats((draft) => {
         const foundChat = draft.find((c) => c.id === chatId);
         if (foundChat) {
