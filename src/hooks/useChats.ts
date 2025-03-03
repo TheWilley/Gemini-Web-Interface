@@ -2,10 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chat, ChatInfo, Options } from '../global/types';
 import { useImmer } from 'use-immer';
 import { produce } from 'immer';
-import constructGeminiRequest from '../utils/constructGeminiRequest';
 import constructGeminiPayload from '../utils/constructGeminiPayload';
 import uid from '../utils/uid';
 import createChatNameFromMessage from '../utils/createChatNameFromMessage';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /*/
   We're using a non-mutable approach to update messages in seperate objects, only reflecting the change to the chats state
@@ -16,12 +16,7 @@ import createChatNameFromMessage from '../utils/createChatNameFromMessage';
 export default function useChats() {
   /* --===== Normal States =====-- */
 
-  const [chats, setChats] = useImmer<Chat[]>(() => {
-    const savedChats = localStorage.getItem('chats');
-    return savedChats ? JSON.parse(savedChats) : [];
-  });
-  const [isGeneratingAnswer, setIsGeneratingAnswer] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const genAI = useRef(new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY));
   const [selectedModel, setSelectedModel] = useState<Chat['model']>({
     key: 'gemini-2.0-flash',
     name: '2.0 Flash',
@@ -40,6 +35,16 @@ export default function useChats() {
       name: '1.5 Flash',
     },
   ]);
+  const model = useMemo(
+    () => genAI.current.getGenerativeModel({ model: selectedModel['key'] }),
+    [selectedModel]
+  );
+  const [chats, setChats] = useImmer<Chat[]>(() => {
+    const savedChats = localStorage.getItem('chats');
+    return savedChats ? JSON.parse(savedChats) : [];
+  });
+  const [isGeneratingAnswer, setIsGeneratingAnswer] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   /* --===== Memorized States =====-- */
 
@@ -162,8 +167,7 @@ export default function useChats() {
       draft.messages.splice(chat.messages.length - 2, 2);
     });
 
-    const chatWithUserMessage = addMessageToChat(newChat, sentMessage, 'self');
-    fetchAnswer(chatWithUserMessage);
+    fetchAnswer(newChat, sentMessage);
   };
 
   /**
@@ -172,96 +176,74 @@ export default function useChats() {
    */
   const sendMessage = (message: string) => {
     const chat = activeChat || createChat();
-    const chatWithUserMessage = addMessageToChat(chat, message, 'self');
-
-    fetchAnswer(chatWithUserMessage);
+    fetchAnswer(chat, message);
   };
 
   /**
    * Fetches an answer from the AI.
-   * @param chat The chat object to update.
+   * @param initialChat The chat object to update.
    */
-  const fetchAnswer = async (chat: Chat) => {
+  const fetchAnswer = async (initialChat: Chat, message: string) => {
     // Notify user we're processing their request
     setIsGeneratingAnswer(true);
     setIsLoading(true);
 
-    // Construct gemeni request
-    const [url, init] = constructGeminiRequest(
-      import.meta.env.VITE_GEMINI_API_KEY,
-      constructGeminiPayload(chat, parseInt(options.numRememberPreviousMessages)),
-      selectedModel.key,
-      true
+    // Construct history to feed into gemini
+    const history = constructGeminiPayload(
+      initialChat,
+      parseInt(options.numRememberPreviousMessages)
     );
+
+    // Add the user message to chat
+    const chatWithUserMessage = addMessageToChat(initialChat, message, 'self');
+    updateMessageContentState(chatWithUserMessage);
 
     // Create a new message with a unique ID for the AI response
     const messageId = uid();
-    const chatWithAiMessage = addMessageToChat(chat, '', 'ai', messageId);
-    updateMessageContentState(chat);
+    const chatWithAiMessage = addMessageToChat(chatWithUserMessage, '', 'ai', messageId);
 
-    fetch(url, init).then((response) => {
-      if (!response.body) throw new Error('No response body found');
+    // Start the chat with said history
+    const geminiChat = model.startChat(history);
+    let combinedChunks = '';
 
+    try {
       setIsLoading(false);
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let result = '';
+      const result = await geminiChat.sendMessageStream(message);
 
-      // Function to process stream chunks
-      function readStream() {
-        reader
-          .read()
-          .then(({ done, value }) => {
-            if (done) {
-              setIsGeneratingAnswer(false);
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        combinedChunks += chunkText;
 
-              if (!chat.name) {
-                createChatNameFromMessage(result, (name) => {
-                  updateChatName(chat, name);
-                });
-              }
-              return;
-            }
-
-            // Decode the chunk and append to result, remove the "data: " prefix
-            const chunk = JSON.parse(
-              decoder.decode(value, { stream: true }).replace('data: ', '')
-            );
-
-            if (chunk.error) {
-              throw new Error(chunk.error.message);
-            } else {
-              result += chunk.candidates[0].content.parts.reduce(
-                (acc: string, part: { text: string }) => acc + part.text,
-                ''
-              );
-            }
-
-            // Update the message incrementally with each chunk
-            const updatedChat = updateMessageContent(
-              chatWithAiMessage,
-              messageId,
-              result
-            );
-            updateMessageContentState(updatedChat);
-
-            // Continue reading next chunk
-            readStream();
-          })
-          .catch((error) => {
-            setIsGeneratingAnswer(false);
-            const updatedChat = updateMessageContent(
-              chatWithAiMessage,
-              messageId,
-              'Error: ' + error.message
-            );
-            updateMessageContentState(updatedChat);
-          });
+        // Update the message incrementally with each chunk
+        const updatedChat = updateMessageContent(
+          chatWithAiMessage,
+          messageId,
+          combinedChunks
+        );
+        updateMessageContentState(updatedChat);
       }
 
-      readStream();
-    });
+      // Update name at the ned if a name does not exist
+      if (!initialChat.name) {
+        updateChatName(
+          initialChat,
+          await createChatNameFromMessage(
+            'Summarize into a maximum of 5 words:' + combinedChunks
+          )
+        );
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsGeneratingAnswer(false);
+        const updatedChat = updateMessageContent(
+          chatWithAiMessage,
+          messageId,
+          'Error: ' + error.message
+        );
+        updateMessageContentState(updatedChat);
+      }
+    }
   };
 
   /**
@@ -280,7 +262,7 @@ export default function useChats() {
   ) => {
     return produce(chat, (draft) => {
       draft.messages.push({
-        id: messageId || Date.now() + Math.random().toString(),
+        id: messageId || uid(),
         text,
         createdAt: Date.now(),
         sender,

@@ -15,7 +15,7 @@ export default function constructGeminiPayload(chat: Chat, numTrailingItems: num
   }
 
   const payload: GeminiPayload = {
-    contents: chat.messages
+    history: chat.messages
       .slice(Math.max(chat.messages.length - numTrailingItems))
       .map((message) => ({
         role: message.sender === 'self' ? 'user' : 'model',

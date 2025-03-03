@@ -22,7 +22,7 @@ export type Chat = {
 } & ChatInfo;
 
 export type GeminiPayload = {
-  contents: {
+  history: {
     role: 'user' | 'model';
     parts: {
       text: string;

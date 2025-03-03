@@ -30,7 +30,7 @@ If you have to pick, use Googles official website over this.
 - Picking model (2.0 Flash, 2.0 Flash Lite, 1.5 Flash)
 - Multiple chats (retained between sessions with localStorage)
 - Exporting and importing chats
-- Interaction with the Gemini API using REST
+- Interaction with the Gemini API with official SDK.
 
 ## Usage
 
