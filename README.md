@@ -1,14 +1,8 @@
 <h1 align="center">
-  <br>
-  <br>
   Gemini Web Interface
-  <br>
 </h1>
 
-<h4 align="center">A functional clone of Google's Gemini chat interface
-<br>
-
-</h4>
+<h4 align="center">A functional clone of Google's Gemini chat interface</h4>
 
 <p align="center">
   <a href="#about">About</a> •
@@ -20,7 +14,7 @@
 
 ## About
 
-This is a functional clone of Google's gemini chat interface. It has been made to closely resemble the UI found on the official website, altough with less _Crash Bang Kablooey_ as I've not put nearly as much effort into polish and animation. Further more, the only supported input method (currently) is text, and I've not dabbled with image generation at all. It is however functional as a simple chatbot, which was the primary goal of this project. More than anything I made this as a learning experience, and to that end it succeeded.
+This is a functional clone of Google's gemini chat interface. It's been made to closely resemble the UI found on the official website, altough with less _Crash Bang Kablooey_ as I've not put nearly as much effort into polish and animation. Further more, the only supported input method (currently) is text. It is however functional as a simple chatbot, which is the primary goal of this project. More than anything I made this as a learning experience, and to that end it succeeded.
 
 If you have to pick, use Googles official website over this.
 
@@ -30,12 +24,12 @@ If you have to pick, use Googles official website over this.
 - Picking model (2.0 Flash, 2.0 Flash Lite, 1.5 Flash)
 - Multiple chats (retained between sessions with localStorage)
 - Exporting and importing chats
-- Interaction with the Gemini API with official SDK.
+- Interaction with the Gemini API using official SDK
 
 ## Usage
 
 > [!CAUTION]
-> Do not upload the build site to any public domain, as your API key is exposed in the compiled Javascript.
+> Do not upload the built site to any public domain, as your API key is exposed in the compiled Javascript.
 
 Before proceeding, rename `.env.example` to `.env` and set the `VITE_GEMINI_API_KEY` variable to your API key. You can get one on [Google's dev platform](https://ai.google.dev/gemini-api/docs/api-key).
 
