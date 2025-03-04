@@ -43,4 +43,5 @@ export type Message = {
 
 export type Options = {
   numRememberPreviousMessages: string;
+  chatNamePrompt: string;
 };

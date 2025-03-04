@@ -1,4 +1,4 @@
-import { faHistory, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faHeader, faHistory, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/Input';
 import Tooltip from '../components/Tooltip';
 import { Options } from '../global/types';
@@ -22,12 +22,31 @@ function Settings({
           label='Previous Messages'
           icon={faHistory}
           disabled={false}
-          name=''
+          name='previous_messages'
           minValue={2}
         />
         <Tooltip
           position='right'
           text='How many previous messages the AI remembers when generating its next response'
+          offsetX={15}
+          maxWidth={150}
+        >
+          <FontAwesomeIcon icon={faQuestionCircle} />
+        </Tooltip>
+      </div>
+      <div className='mt-5 flex items-center gap-3'>
+        <Input
+          type='text'
+          value={options.chatNamePrompt}
+          onChange={(e) => updateOption('chatNamePrompt', e.target.value)}
+          label='Chat Name Prompt'
+          icon={faHeader}
+          disabled={false}
+          name=''
+        />
+        <Tooltip
+          position='right'
+          text='The prompt that should be used to generate a chat name, [n] is replaced with the first message sent by the AI - leave blank to disable name generation'
           offsetX={15}
           maxWidth={150}
         >

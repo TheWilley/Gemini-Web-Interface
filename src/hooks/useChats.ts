@@ -66,6 +66,7 @@ export default function useChats() {
       ? JSON.parse(savedOptions)
       : {
           numRememberPreviousMessages: '5',
+          chatNamePrompt: 'Summarize into a maximum of 5 words: [n]',
         };
   });
 
@@ -234,9 +235,11 @@ export default function useChats() {
       if (!initialChat.name) {
         updateChatName(
           initialChat,
-          await createChatNameFromMessage(
-            'Summarize into a maximum of 5 words:' + combinedChunks
-          )
+          options.chatNamePrompt.length
+            ? await createChatNameFromMessage(
+                options.chatNamePrompt.replace('[n]', combinedChunks)
+              )
+            : 'New Chat'
         );
       }
     } catch (error) {
