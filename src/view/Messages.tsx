@@ -47,7 +47,7 @@ function Messages({
 
   useEffect(() => {
     scrollToBottomRef.current?.scrollIntoView();
-  }, [activeChat.active]);
+  }, [activeChat.id]);
 
   return (
     <>
