@@ -109,7 +109,7 @@ function Sidebar({
                   position='right'
                   text={chatInfo.name || 'Generating chat name...'}
                   classes='w-full'
-                  offsetX={50}
+                  offsetX={52}
                 >
                   <Button
                     onclick={() => selectChat(chatInfo.id)}
