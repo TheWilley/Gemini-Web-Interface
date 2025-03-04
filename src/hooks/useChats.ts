@@ -479,17 +479,11 @@ export default function useChats() {
    * @returns The total amount of used tokens.
    */
   const getTotalAmountOfUsedTokens = () => {
-    const totalTokenCount = chats.reduce((acc, chat) => {
-      return (
-        acc +
-        chat.messages.reduce((msgAcc, message) => {
-          if (message.tokenCount) {
-            return msgAcc + message.tokenCount;
-          } else {
-            return 0;
-          }
-        }, 0)
-      );
+    let totalTokenCount = 0;
+    chats.forEach((chat) => {
+      chat.messages.forEach((message) => {
+        totalTokenCount += message.tokenCount;
+      });
     }, 0);
 
     return totalTokenCount;
