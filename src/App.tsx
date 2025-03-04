@@ -28,6 +28,7 @@ function App() {
     updateOption,
     cloneChat,
     getTotalAmountOfUsedTokens,
+    restoreOptions,
   } = useChats();
 
   return (
@@ -59,6 +60,7 @@ function App() {
           viewOptions={viewOptions}
           options={options}
           updateOption={updateOption}
+          restoreOptions={restoreOptions}
         />
       </Layout>
       <Notification />

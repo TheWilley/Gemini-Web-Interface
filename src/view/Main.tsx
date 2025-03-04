@@ -17,6 +17,7 @@ function Main({
   options,
   updateOption,
   regenerate,
+  restoreOptions,
 }: {
   activeChat: Chat | undefined;
   sendMessage: (message: string) => void;
@@ -29,6 +30,7 @@ function Main({
   options: Options;
   updateOption: (target: string, value: string) => void;
   regenerate: () => void;
+  restoreOptions: () => void;
 }) {
   return (
     <div className='relative flex w-full items-center justify-center'>
@@ -46,7 +48,11 @@ function Main({
       <div className='flex h-screen w-full max-w-[840px] flex-col pl-3 pr-3 pt-12'>
         <div className='no-scrollbar flex-grow overflow-auto p-5'>
           {viewOptions ? (
-            <Settings options={options} updateOption={updateOption} />
+            <Settings
+              options={options}
+              updateOption={updateOption}
+              restoreOptions={restoreOptions}
+            />
           ) : activeChat ? (
             <Messages
               activeChat={activeChat}

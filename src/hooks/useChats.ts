@@ -13,6 +13,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
   is processed do we actually show it to the user.
 /*/
 
+const defaultOptions = {
+  numRememberPreviousMessages: '5',
+  chatNamePrompt: 'Summarize into a maximum of 5 words: [n]',
+};
+
 export default function useChats() {
   /* --===== Normal States =====-- */
 
@@ -62,12 +67,7 @@ export default function useChats() {
   const [viewOptions, setViewOptions] = useState(false);
   const [options, setOptions] = useImmer<Options>(() => {
     const savedOptions = localStorage.getItem('options');
-    return savedOptions
-      ? JSON.parse(savedOptions)
-      : {
-          numRememberPreviousMessages: '5',
-          chatNamePrompt: 'Summarize into a maximum of 5 words: [n]',
-        };
+    return savedOptions ? JSON.parse(savedOptions) : defaultOptions;
   });
 
   /* --===== Effects =====-- */
@@ -495,6 +495,15 @@ export default function useChats() {
     return totalTokenCount;
   };
 
+  /**
+   * Restores options to defaults.
+   */
+  const restoreOptions = () => {
+    if (confirm('Are you sure you want to restore to default settings?')) {
+      setOptions(defaultOptions);
+    }
+  };
+
   return {
     chats,
     activeChat,
@@ -519,5 +528,6 @@ export default function useChats() {
     updateOption,
     cloneChat,
     getTotalAmountOfUsedTokens,
+    restoreOptions,
   };
 }

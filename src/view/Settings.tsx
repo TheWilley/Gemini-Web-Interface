@@ -1,14 +1,23 @@
-import { faHeader, faHistory, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faHeader,
+  faHistory,
+  faQuestionCircle,
+  faRefresh,
+} from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/Input';
 import Tooltip from '../components/Tooltip';
 import { Options } from '../global/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from '../components/Button';
+import IconWithElement from '../components/IconWithText';
 
 function Settings({
   options,
+  restoreOptions,
   updateOption,
 }: {
   options: Options;
+  restoreOptions: () => void;
   updateOption: (target: string, value: string) => void;
 }) {
   return (
@@ -53,6 +62,10 @@ function Settings({
           <FontAwesomeIcon icon={faQuestionCircle} />
         </Tooltip>
       </div>
+      <hr className='mb-4 mt-6 opacity-20' />
+      <Button onclick={restoreOptions}>
+        <IconWithElement icon={faRefresh} text={'Restore to default settings'} />
+      </Button>
     </div>
   );
 }
