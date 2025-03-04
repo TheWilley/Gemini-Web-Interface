@@ -26,6 +26,7 @@ function App() {
     regenerate,
     toggleViewOptions,
     updateOption,
+    cloneChat,
   } = useChats();
 
   return (
@@ -42,6 +43,7 @@ function App() {
           deleteChat={deleteChat}
           editChatName={editChatName}
           toggleViewOptions={toggleViewOptions}
+          cloneChat={cloneChat}
         />
         <Main
           activeChat={activeChat}

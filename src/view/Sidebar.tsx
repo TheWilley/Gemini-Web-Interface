@@ -3,6 +3,7 @@ import {
   faAlignLeft,
   faBars,
   faCog,
+  faCopy,
   faFileExport,
   faFileImport,
   faPen,
@@ -30,6 +31,7 @@ function Sidebar({
   deleteChat,
   editChatName,
   toggleViewOptions,
+  cloneChat,
 }: {
   chatsInfo: ChatInfo[];
   newChat: () => void;
@@ -41,6 +43,7 @@ function Sidebar({
   deleteChat: (chatId: string) => void;
   editChatName: (chatId: string) => void;
   toggleViewOptions: () => void;
+  cloneChat: (chatId: string) => void;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -142,6 +145,13 @@ function Sidebar({
                       display: <IconWithElement icon={faPen} text={'Edit'} />,
                       onclick() {
                         editChatName(chatInfo.id);
+                      },
+                    },
+                    {
+                      key: 'clone',
+                      display: <IconWithElement icon={faCopy} text={'Clone'} />,
+                      onclick() {
+                        cloneChat(chatInfo.id);
                       },
                     },
                   ]}

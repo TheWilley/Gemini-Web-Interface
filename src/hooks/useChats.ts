@@ -423,6 +423,25 @@ export default function useChats() {
     }
   };
 
+  /**
+   * Creates a clone of a chat.
+   * @param chat The id of the chat to clone.
+   */
+  const cloneChat = (chatId: string) => {
+    setChats((draft) => {
+      const foundChat = draft.find((c) => c.id === chatId);
+
+      if (foundChat) {
+        const newChat = produce(foundChat, (draft2) => {
+          draft2.id = uid();
+          draft2.name = draft2.name + ' (Copy)';
+          draft2.active = false;
+        });
+        draft.push(newChat);
+      }
+    });
+  };
+
   return {
     chats,
     activeChat,
@@ -445,5 +464,6 @@ export default function useChats() {
     regenerate,
     toggleViewOptions,
     updateOption,
+    cloneChat,
   };
 }
