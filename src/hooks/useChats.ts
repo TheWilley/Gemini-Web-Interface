@@ -210,6 +210,12 @@ export default function useChats() {
       setIsLoading(false);
 
       const result = await geminiChat.sendMessageStream(message);
+      const tokeCount = (await result.response).usageMetadata?.totalTokenCount || 0;
+      const chatWithAiMessageUpdatedTokenCount = updateMessageTokensCount(
+        chatWithAiMessage,
+        messageId,
+        tokeCount
+      );
 
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
@@ -217,7 +223,7 @@ export default function useChats() {
 
         // Update the message incrementally with each chunk
         const updatedChat = updateMessageContent(
-          chatWithAiMessage,
+          chatWithAiMessageUpdatedTokenCount,
           messageId,
           combinedChunks
         );
@@ -266,6 +272,7 @@ export default function useChats() {
         text,
         createdAt: Date.now(),
         sender,
+        tokenCount: 0,
       });
     });
   };
@@ -275,6 +282,7 @@ export default function useChats() {
    * @param chat The chat object to update.
    * @param messageId The ID of the chat to modify.
    * @param text The text to set the message to.
+   * @returns The updated chat object.
    */
   const updateMessageContent = (chat: Chat, messageId: string, text: string) => {
     return produce(chat, (draft) => {
@@ -282,6 +290,27 @@ export default function useChats() {
 
       if (message) {
         message.text = text;
+      }
+    });
+  };
+
+  /**
+   * Updates the token count for a given message in a chat.
+   * @param chat The chat object to update.
+   * @param messageId The ID of the chat to modify.
+   * @param tokenCount The number of tokens the message cost.
+   * @returns The updated chat object.
+   */
+  const updateMessageTokensCount = (
+    chat: Chat,
+    messageId: string,
+    tokenCount: number
+  ) => {
+    return produce(chat, (draft) => {
+      const message = draft.messages.find((m) => m.id === messageId);
+
+      if (message) {
+        message.tokenCount = tokenCount;
       }
     });
   };
@@ -442,6 +471,27 @@ export default function useChats() {
     });
   };
 
+  /**
+   * Gets the total amount of used tokens across all chats.
+   * @returns The total amount of used tokens.
+   */
+  const getTotalAmountOfUsedTokens = () => {
+    const totalTokenCount = chats.reduce((acc, chat) => {
+      return (
+        acc +
+        chat.messages.reduce((msgAcc, message) => {
+          if (message.tokenCount) {
+            return msgAcc + message.tokenCount;
+          } else {
+            return 0;
+          }
+        }, 0)
+      );
+    }, 0);
+
+    return totalTokenCount;
+  };
+
   return {
     chats,
     activeChat,
@@ -465,5 +515,6 @@ export default function useChats() {
     toggleViewOptions,
     updateOption,
     cloneChat,
+    getTotalAmountOfUsedTokens,
   };
 }

@@ -27,6 +27,7 @@ function App() {
     toggleViewOptions,
     updateOption,
     cloneChat,
+    getTotalAmountOfUsedTokens,
   } = useChats();
 
   return (
@@ -44,6 +45,7 @@ function App() {
           editChatName={editChatName}
           toggleViewOptions={toggleViewOptions}
           cloneChat={cloneChat}
+          getTotalAmountOfUsedTokens={getTotalAmountOfUsedTokens}
         />
         <Main
           activeChat={activeChat}

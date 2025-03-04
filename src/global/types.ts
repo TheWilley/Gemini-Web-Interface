@@ -38,6 +38,7 @@ export type Message = {
   text: string;
   createdAt: number;
   sender: 'self' | 'ai';
+  tokenCount: number;
 };
 
 export type Options = {

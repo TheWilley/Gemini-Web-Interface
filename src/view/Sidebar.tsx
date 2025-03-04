@@ -32,6 +32,7 @@ function Sidebar({
   editChatName,
   toggleViewOptions,
   cloneChat,
+  getTotalAmountOfUsedTokens,
 }: {
   chatsInfo: ChatInfo[];
   newChat: () => void;
@@ -44,6 +45,7 @@ function Sidebar({
   editChatName: (chatId: string) => void;
   toggleViewOptions: () => void;
   cloneChat: (chatId: string) => void;
+  getTotalAmountOfUsedTokens: () => number;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -164,7 +166,7 @@ function Sidebar({
         </HideableBlock>
       </div>
 
-      <div className='ml-3 mt-auto text-sm'>
+      <div className='mt-auto text-sm'>
         <HideableBlock isHidden={isCollapsed}>
           <Button onclick={clearChats}>
             <IconWithElement icon={faX} text={'Clear Chats'} />
@@ -181,6 +183,9 @@ function Sidebar({
           <Button onclick={toggleViewOptions}>
             <IconWithElement icon={faCog} text={'Settings'} />
           </Button>
+          <div className='ml-3 mt-5 text-text'>
+            {getTotalAmountOfUsedTokens()} tokens used
+          </div>
         </HideableBlock>
       </div>
 

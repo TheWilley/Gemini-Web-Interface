@@ -76,7 +76,7 @@ function Messages({
               ) : (
                 <>
                   <Markdown>{isLoading ? 'Creating message...' : message.text}</Markdown>
-                  <div className='opacity-0 transition-opacity group-hover:opacity-100'>
+                  <div className='flex items-center opacity-0 transition-opacity group-hover:opacity-100'>
                     <Tooltip position='bottom' text='Copy text'>
                       <Button onclick={() => copy(message, 'chat')}>
                         <FontAwesomeIcon icon={faCopy} className='opacity-60' />
@@ -99,6 +99,9 @@ function Messages({
                         </Button>
                       </Tooltip>
                     )}
+                    <span className='ml-auto hidden opacity-60 sm:block'>
+                      {message.tokenCount || '0'} tokens
+                    </span>
                   </div>
                 </>
               )}
