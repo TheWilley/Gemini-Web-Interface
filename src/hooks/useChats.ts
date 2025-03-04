@@ -206,29 +206,29 @@ export default function useChats() {
     // Start the chat with said history
     const geminiChat = model.startChat(history);
     let combinedChunks = '';
+    let tokenCount = 0;
 
     try {
       setIsLoading(false);
-
       const result = await geminiChat.sendMessageStream(message);
-      const tokeCount = (await result.response).usageMetadata?.totalTokenCount || 0;
-      const chatWithAiMessageUpdatedTokenCount = updateMessageTokensCount(
-        chatWithAiMessage,
-        messageId,
-        tokeCount
-      );
 
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
         combinedChunks += chunkText;
+        tokenCount = chunk.usageMetadata?.totalTokenCount || 0;
 
         // Update the message incrementally with each chunk
         const updatedChat = updateMessageContent(
-          chatWithAiMessageUpdatedTokenCount,
+          chatWithAiMessage,
           messageId,
           combinedChunks
         );
-        updateMessageContentState(updatedChat);
+        const updatedChatWithTokens = updateMessageTokensCount(
+          updatedChat,
+          messageId,
+          tokenCount
+        );
+        updateMessageContentState(updatedChatWithTokens);
       }
 
       // Update name at the ned if a name does not exist
