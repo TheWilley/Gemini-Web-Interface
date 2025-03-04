@@ -38,7 +38,7 @@ function Settings({
           position='right'
           text='How many previous messages the AI remembers when generating its next response'
           offsetX={15}
-          maxWidth={150}
+          width={150}
         >
           <FontAwesomeIcon icon={faQuestionCircle} />
         </Tooltip>
@@ -57,7 +57,7 @@ function Settings({
           position='right'
           text='The prompt that should be used to generate a chat name, [n] is replaced with the first message sent by the AI - leave blank to disable name generation'
           offsetX={15}
-          maxWidth={150}
+          width={150}
         >
           <FontAwesomeIcon icon={faQuestionCircle} />
         </Tooltip>

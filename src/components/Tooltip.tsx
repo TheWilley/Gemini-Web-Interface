@@ -8,7 +8,7 @@ function Tooltip({
   classes,
   offsetX = 0,
   offsetY = 0,
-  maxWidth,
+  width,
 }: {
   text: string;
   position: 'left' | 'right' | 'bottom' | 'top';
@@ -16,7 +16,7 @@ function Tooltip({
   classes?: string;
   offsetX?: number;
   offsetY?: number;
-  maxWidth?: number;
+  width?: number;
 }) {
   const tooltipPositionStyles = {
     top: {
@@ -64,8 +64,8 @@ function Tooltip({
         )}
         style={{
           ...tooltipPositionStyles[position],
-          maxWidth,
-          whiteSpace: maxWidth ? 'inherit' : 'nowrap',
+          width: width,
+          whiteSpace: width ? 'inherit' : 'nowrap',
         }}
       >
         {text}
