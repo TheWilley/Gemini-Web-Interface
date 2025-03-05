@@ -14,6 +14,7 @@ function App() {
     models,
     viewOptions,
     options,
+    isLoading,
     newChat,
     selectChat,
     sendMessage,
@@ -52,7 +53,7 @@ function App() {
           activeChat={activeChat}
           sendMessage={sendMessage}
           isGeneratingAnswer={isGeneratingAnswer}
-          isLoading={false}
+          isLoading={isLoading}
           updateSelectModel={updateSelectModel}
           selectedModel={selectedModel}
           models={models.current}

@@ -14,6 +14,20 @@ import { useCallback, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import Tooltip from '../components/Tooltip';
 
+function Skeleton() {
+  return (
+    <div role='status' className='max-w-sm animate-pulse'>
+      <div className='mb-4 h-2.5 w-48 rounded-full bg-gray-200 dark:bg-gray-700'></div>
+      <div className='mb-2.5 h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700'></div>
+      <div className='mb-2.5 h-2 rounded-full bg-gray-200 dark:bg-gray-700'></div>
+      <div className='mb-2.5 h-2 max-w-[330px] rounded-full bg-gray-200 dark:bg-gray-700'></div>
+      <div className='mb-2.5 h-2 max-w-[300px] rounded-full bg-gray-200 dark:bg-gray-700'></div>
+      <div className='h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700'></div>
+      <span className='sr-only'>Loading...</span>
+    </div>
+  );
+}
+
 function Messages({
   activeChat,
   isLoading,
@@ -75,7 +89,7 @@ function Messages({
                 message.text
               ) : (
                 <>
-                  <Markdown>{isLoading ? 'Creating message...' : message.text}</Markdown>
+                  {isLoading ? <Skeleton /> : <Markdown>{message.text}</Markdown>}
                   <div className='flex items-center opacity-0 transition-opacity group-hover:opacity-100'>
                     <Tooltip position='bottom' text='Copy text'>
                       <Button onclick={() => copy(message, 'chat')}>

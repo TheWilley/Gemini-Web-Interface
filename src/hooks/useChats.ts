@@ -202,6 +202,7 @@ export default function useChats() {
     // Create a new message with a unique ID for the AI response
     const messageId = uid();
     const chatWithAiMessage = addMessageToChat(chatWithUserMessage, '', 'ai', messageId);
+    updateMessageContentState(chatWithAiMessage);
 
     // Start the chat with said history
     const geminiChat = model.startChat(history);
@@ -209,8 +210,8 @@ export default function useChats() {
     let tokenCount = 0;
 
     try {
-      setIsLoading(false);
       const result = await geminiChat.sendMessageStream(message);
+      setIsLoading(false);
 
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
