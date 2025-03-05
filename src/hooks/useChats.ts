@@ -61,6 +61,16 @@ export default function useChats() {
       }),
     [chats]
   );
+  const totalTokenCount = useMemo(() => {
+    let totalTokenCount = 0;
+    chats.forEach((chat) => {
+      chat.messages.forEach((message) => {
+        totalTokenCount += message.tokenCount;
+      });
+    }, 0);
+
+    return totalTokenCount;
+  }, [chats]);
 
   /* --===== Options =====-- */
 
@@ -476,21 +486,6 @@ export default function useChats() {
   };
 
   /**
-   * Gets the total amount of used tokens across all chats.
-   * @returns The total amount of used tokens.
-   */
-  const getTotalAmountOfUsedTokens = () => {
-    let totalTokenCount = 0;
-    chats.forEach((chat) => {
-      chat.messages.forEach((message) => {
-        totalTokenCount += message.tokenCount;
-      });
-    }, 0);
-
-    return totalTokenCount;
-  };
-
-  /**
    * Restores options to defaults.
    */
   const restoreOptions = () => {
@@ -522,7 +517,7 @@ export default function useChats() {
     toggleViewOptions,
     updateOption,
     cloneChat,
-    getTotalAmountOfUsedTokens,
+    totalTokenCount,
     restoreOptions,
   };
 }

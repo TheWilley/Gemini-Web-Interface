@@ -13,6 +13,7 @@ function App() {
     selectedModel,
     models,
     viewOptions,
+    totalTokenCount,
     options,
     isLoading,
     newChat,
@@ -28,7 +29,6 @@ function App() {
     toggleViewOptions,
     updateOption,
     cloneChat,
-    getTotalAmountOfUsedTokens,
     restoreOptions,
   } = useChats();
 
@@ -47,7 +47,7 @@ function App() {
           editChatName={editChatName}
           toggleViewOptions={toggleViewOptions}
           cloneChat={cloneChat}
-          getTotalAmountOfUsedTokens={getTotalAmountOfUsedTokens}
+          totalTokenCount={totalTokenCount}
         />
         <Main
           activeChat={activeChat}

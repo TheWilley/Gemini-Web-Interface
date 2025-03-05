@@ -22,9 +22,10 @@ import Ellipsis from '../components/Ellipsis';
 
 function Sidebar({
   chatsInfo,
+  chatIsSelected,
+  totalTokenCount,
   newChat,
   selectChat,
-  chatIsSelected,
   clearChats,
   exportChats,
   importChats,
@@ -32,7 +33,6 @@ function Sidebar({
   editChatName,
   toggleViewOptions,
   cloneChat,
-  getTotalAmountOfUsedTokens,
 }: {
   chatsInfo: ChatInfo[];
   newChat: () => void;
@@ -45,7 +45,7 @@ function Sidebar({
   editChatName: (chatId: string) => void;
   toggleViewOptions: () => void;
   cloneChat: (chatId: string) => void;
-  getTotalAmountOfUsedTokens: () => number;
+  totalTokenCount: number;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -183,9 +183,7 @@ function Sidebar({
           <Button onclick={toggleViewOptions}>
             <IconWithElement icon={faCog} text={'Settings'} />
           </Button>
-          <div className='ml-3 mt-5 text-text'>
-            {getTotalAmountOfUsedTokens()} tokens used
-          </div>
+          <div className='ml-3 mt-5 text-text'>{totalTokenCount} tokens used</div>
         </HideableBlock>
       </div>
 
