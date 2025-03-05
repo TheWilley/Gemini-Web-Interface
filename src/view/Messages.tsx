@@ -89,7 +89,11 @@ function Messages({
                 message.text
               ) : (
                 <>
-                  {isLoading ? <Skeleton /> : <Markdown>{message.text}</Markdown>}
+                  {isLoading && index === activeChat.messages.length - 1 ? (
+                    <Skeleton />
+                  ) : (
+                    <Markdown>{message.text}</Markdown>
+                  )}
                   <div className='flex items-center opacity-0 transition-opacity group-hover:opacity-100'>
                     <Tooltip position='bottom' text='Copy text'>
                       <Button onclick={() => copy(message, 'chat')}>
