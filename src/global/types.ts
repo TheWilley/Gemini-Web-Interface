@@ -46,4 +46,5 @@ export type Options = {
   numRememberPreviousMessages: string;
   chatNamePrompt: string;
   temperature: string;
+  systemInstruction: string;
 };

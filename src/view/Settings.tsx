@@ -85,6 +85,25 @@ function Settings({
           <FontAwesomeIcon icon={faQuestionCircle} />
         </Tooltip>
       </div>
+      <div className='mt-5 flex items-center gap-3'>
+        <Input
+          type='text'
+          value={options.systemInstruction}
+          onChange={(e) => updateOption('systemInstruction', e.target.value)}
+          label='System Instruction'
+          icon={faThermometer2}
+          disabled={false}
+          name='system_instruction'
+        />
+        <Tooltip
+          position='right'
+          text='The system instruction - leave blank for no for no instruction'
+          offsetX={15}
+          width={150}
+        >
+          <FontAwesomeIcon icon={faQuestionCircle} />
+        </Tooltip>
+      </div>
       <hr className='mb-4 mt-6 opacity-20' />
       <Button onclick={restoreOptions}>
         <IconWithElement icon={faRefresh} text={'Restore to default settings'} />

@@ -18,6 +18,7 @@ const defaultOptions: Options = {
   numRememberPreviousMessages: '5',
   chatNamePrompt: 'Summarize into a maximum of 5 words: [n]',
   temperature: '1',
+  systemInstruction: '',
 };
 
 export default function useChats() {
@@ -59,8 +60,11 @@ export default function useChats() {
             ? parseInt(options.temperature)
             : undefined,
         },
+        systemInstruction: textIsNotBlank(options.systemInstruction)
+          ? options.systemInstruction
+          : undefined,
       }),
-    [options.temperature, selectedModel]
+    [options.systemInstruction, options.temperature, selectedModel]
   );
   const [chats, setChats] = useImmer<Chat[]>(() => {
     const savedChats = localStorage.getItem('chats');
