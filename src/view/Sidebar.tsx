@@ -89,7 +89,7 @@ function Sidebar({
       </div>
 
       <div className='mt-8'>
-        <Tooltip position='bottom' text='New chat'>
+        <Tooltip position='bottom' text='New chat' classes='max-w-full overflow-hidden'>
           <Button onclick={() => newChat()} disabled={!chatIsSelected} strong bold>
             <IconWithElement icon={faPlus} text='New Chat' hideText={isCollapsed} />
           </Button>

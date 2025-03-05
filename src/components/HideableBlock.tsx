@@ -12,12 +12,15 @@ function HideableBlock({
   return (
     <div
       className={classNames(
-        'transition-opacity duration-300',
-        isHidden ? '0' : 'opacity-100',
+        'transition-opacity duration-500 ease-in-out',
+        isHidden ? 'opacity-0 duration-200' : 'opacity-100',
+        'group',
         classes
       )}
     >
-      {!isHidden && children}
+      <div className='transition-opacity duration-500 group-hover:opacity-100'>
+        {children}
+      </div>
     </div>
   );
 }
