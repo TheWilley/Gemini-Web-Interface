@@ -29,7 +29,8 @@ export type GeminiPayload = {
     }[];
   }[];
   generationConfig?: {
-    maxOutputTokens: number;
+    temperature?: number;
+    maxOutputTokens?: number;
   };
 };
 
@@ -44,4 +45,5 @@ export type Message = {
 export type Options = {
   numRememberPreviousMessages: string;
   chatNamePrompt: string;
+  temperature: string;
 };

@@ -13,12 +13,21 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
   is processed do we actually show it to the user.
 /*/
 
-const defaultOptions = {
+const defaultOptions: Options = {
   numRememberPreviousMessages: '5',
   chatNamePrompt: 'Summarize into a maximum of 5 words: [n]',
+  temperature: '1',
 };
 
 export default function useChats() {
+  /* --===== Options =====-- */
+
+  const [viewOptions, setViewOptions] = useState(false);
+  const [options, setOptions] = useImmer<Options>(() => {
+    const savedOptions = localStorage.getItem('options');
+    return savedOptions ? JSON.parse(savedOptions) : defaultOptions;
+  });
+
   /* --===== Normal States =====-- */
 
   const genAI = useRef(new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY));
@@ -41,8 +50,17 @@ export default function useChats() {
     },
   ]);
   const model = useMemo(
-    () => genAI.current.getGenerativeModel({ model: selectedModel['key'] }),
-    [selectedModel]
+    () =>
+      genAI.current.getGenerativeModel({
+        model: selectedModel['key'],
+        generationConfig: {
+          temperature:
+            parseInt(options.temperature) >= 0
+              ? parseInt(options.temperature)
+              : undefined,
+        },
+      }),
+    [options.temperature, selectedModel]
   );
   const [chats, setChats] = useImmer<Chat[]>(() => {
     const savedChats = localStorage.getItem('chats');
@@ -71,14 +89,6 @@ export default function useChats() {
 
     return totalTokenCount;
   }, [chats]);
-
-  /* --===== Options =====-- */
-
-  const [viewOptions, setViewOptions] = useState(false);
-  const [options, setOptions] = useImmer<Options>(() => {
-    const savedOptions = localStorage.getItem('options');
-    return savedOptions ? JSON.parse(savedOptions) : defaultOptions;
-  });
 
   /* --===== Effects =====-- */
 
@@ -199,8 +209,8 @@ export default function useChats() {
     setIsGeneratingAnswer(true);
     setIsLoading(true);
 
-    // Construct history to feed into gemini
-    const history = constructGeminiPayload(
+    // Construct payload to feed into gemini
+    const payload = constructGeminiPayload(
       initialChat,
       parseInt(options.numRememberPreviousMessages)
     );
@@ -214,8 +224,8 @@ export default function useChats() {
     const chatWithAiMessage = addMessageToChat(chatWithUserMessage, '', 'ai', messageId);
     updateMessageContentState(chatWithAiMessage);
 
-    // Start the chat with said history
-    const geminiChat = model.startChat(history);
+    // Start the chat with said payload
+    const geminiChat = model.startChat(payload);
     let combinedChunks = '';
     let tokenCount = 0;
 

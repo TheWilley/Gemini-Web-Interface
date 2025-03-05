@@ -9,7 +9,9 @@ function Input({
   type = 'text',
   icon,
   disabled,
+  step,
   minValue,
+  maxValue,
 }: {
   label: string;
   name: string;
@@ -18,14 +20,18 @@ function Input({
   type: 'text' | 'number';
   icon: FontAwesomeIconProps['icon'];
   disabled: boolean;
+  step?: number;
   minValue?: number;
+  maxValue?: number;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;
 
     if (type === 'number') {
-      if (minValue && +newValue < minValue) {
+      if (minValue !== undefined && +newValue < minValue) {
         newValue = minValue.toString();
+      } else if (maxValue !== undefined && +newValue > maxValue) {
+        newValue = maxValue.toString();
       }
     }
 
@@ -55,7 +61,9 @@ function Input({
             disabled ? 'bg-gray-200' : ''
           }`}
           disabled={disabled}
-          min={type === 'number' && minValue ? minValue : undefined} // Apply minValue only if type is 'number'
+          min={type === 'number' && minValue !== undefined ? minValue : undefined}
+          max={type === 'number' && maxValue !== undefined ? maxValue : undefined}
+          step={type === 'number' && step !== undefined ? step : undefined}
         />
 
         <div
