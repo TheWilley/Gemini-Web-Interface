@@ -25,6 +25,8 @@ function Input({
   maxValue?: number;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.validity.valid) return;
+
     let newValue = e.target.value;
 
     if (type === 'number') {
@@ -64,6 +66,7 @@ function Input({
           min={type === 'number' && minValue !== undefined ? minValue : undefined}
           max={type === 'number' && maxValue !== undefined ? maxValue : undefined}
           step={type === 'number' && step !== undefined ? step : undefined}
+          pattern={type === 'number' ? '[0-9]*' : '*'}
         />
 
         <div
