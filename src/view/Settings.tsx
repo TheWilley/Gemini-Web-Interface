@@ -37,7 +37,7 @@ function Settings({
         />
         <Tooltip
           position='right'
-          text='How many previous messages the AI remembers when generating its next response'
+          text='How many previous messages the AI remembers when generating its next response - leave blank to disable memory'
           offsetX={15}
           width={150}
         >
@@ -78,7 +78,7 @@ function Settings({
         />
         <Tooltip
           position='right'
-          text='The AI temperature (the randomness of the output) - set to -0.1 to let the AI decide'
+          text='The AI temperature (the randomness of the output) - leave blank to let the AI decide'
           offsetX={15}
           width={150}
         >

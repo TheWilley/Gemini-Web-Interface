@@ -6,6 +6,7 @@ import constructGeminiPayload from '../utils/constructGeminiPayload';
 import uid from '../utils/uid';
 import createChatNameFromMessage from '../utils/createChatNameFromMessage';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import textIsNotBlank from '../utils/textIsNotBlank';
 
 /*/
   We're using a non-mutable approach to update messages in seperate objects, only reflecting the change to the chats state
@@ -54,10 +55,9 @@ export default function useChats() {
       genAI.current.getGenerativeModel({
         model: selectedModel['key'],
         generationConfig: {
-          temperature:
-            parseInt(options.temperature) >= 0
-              ? parseInt(options.temperature)
-              : undefined,
+          temperature: textIsNotBlank(options.temperature)
+            ? parseInt(options.temperature)
+            : undefined,
         },
       }),
     [options.temperature, selectedModel]
@@ -212,7 +212,9 @@ export default function useChats() {
     // Construct payload to feed into gemini
     const payload = constructGeminiPayload(
       initialChat,
-      parseInt(options.numRememberPreviousMessages)
+      textIsNotBlank(options.numRememberPreviousMessages)
+        ? parseInt(options.numRememberPreviousMessages)
+        : 0
     );
 
     // Add the user message to chat
@@ -256,7 +258,7 @@ export default function useChats() {
       if (!initialChat.name) {
         updateChatName(
           initialChat,
-          options.chatNamePrompt.length
+          textIsNotBlank(options.chatNamePrompt)
             ? await createChatNameFromMessage(
                 options.chatNamePrompt.replace('[n]', combinedChunks)
               )
