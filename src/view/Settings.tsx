@@ -1,4 +1,5 @@
 import {
+  faCommentDots,
   faHeader,
   faHistory,
   faQuestionCircle,
@@ -91,13 +92,13 @@ function Settings({
           value={options.systemInstruction}
           onChange={(e) => updateOption('systemInstruction', e.target.value)}
           label='System Instruction'
-          icon={faThermometer2}
+          icon={faCommentDots}
           disabled={false}
           name='system_instruction'
         />
         <Tooltip
           position='right'
-          text='The system instruction - leave blank for no for no instruction'
+          text='The system instruction - leave blank for no instruction'
           offsetX={15}
           width={150}
         >
