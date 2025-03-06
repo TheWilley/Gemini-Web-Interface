@@ -56,7 +56,7 @@ $ npm run preview
 ## Todo
 
 - [ ] Create tests
-- [ ] Make the API more configurable (token limits, temperature, etc.)
+- [x] Make the API more configurable (token limits, temperature, etc.) ([f5e903c](https://github.com/TheWilley/Gemini-Web-Interface/commit/f5e903c5fb0c0d2c82d1d10cfcb590e60b19653f), [6cb7502](https://github.com/TheWilley/Gemini-Web-Interface/commit/6cb7502399e274664fbbf49e833a78eb37a30a2a), [17cf2a3](https://github.com/TheWilley/Gemini-Web-Interface/commit/17cf2a307825a3459fb24627876d5d360a322aea), [ea006fb](https://github.com/TheWilley/Gemini-Web-Interface/commit/ea006fb274d4a381f5b734e629f9bbc08d3e55fa))
 - [ ] Add support for uploading files
 - [ ] Add support for image rendering in chat
 - [ ] Add more comments and clean up code.
