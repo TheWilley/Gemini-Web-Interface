@@ -30,6 +30,7 @@ function App() {
     updateOption,
     cloneChat,
     restoreOptions,
+    editMessage,
   } = useChats();
 
   return (
@@ -62,6 +63,7 @@ function App() {
           options={options}
           updateOption={updateOption}
           restoreOptions={restoreOptions}
+          editMessage={editMessage}
         />
       </Layout>
       <Notification />

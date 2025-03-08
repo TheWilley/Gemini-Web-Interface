@@ -183,16 +183,57 @@ export default function useChats() {
   };
 
   /**
-   * Generates a new answer for the last send message.
+   * Regenerates the chat's answer by either editing the last message or using the last sent message.
+   *
+   * @param edit - If true, prompts the user to edit the last message. Defaults to false.
    */
-  const regenerate = () => {
+  const regenerate = (edit = false) => {
     const chat = activeChat || createChat();
-    const sentMessage = chat.messages[chat.messages.length - 2].text;
-    const newChat = produce(chat, (draft) => {
+
+    // Get the second-to-last message text
+    const lastSentMessage = getLastSentMessage(chat);
+
+    if (lastSentMessage) {
+      // Prompt for a new message if 'edit' is true
+      const sentMessage = edit ? promptForNewMessage(lastSentMessage) : lastSentMessage;
+
+      if (sentMessage) {
+        const updatedChat = updateChatMessages(chat);
+        fetchAnswer(updatedChat, sentMessage);
+      }
+    }
+  };
+
+  /**
+   * Retrieves the second-to-last message from the chat.
+   *
+   * @param chat - The chat object containing messages.
+   * @returns The text of the second-to-last message or null if no message exists.
+   */
+  const getLastSentMessage = (chat: Chat) => {
+    return chat.messages[chat.messages.length - 2]?.text || null;
+  };
+
+  /**
+   * Prompts the user to input a new message, optionally pre-filling it with the provided last message.
+   *
+   * @param lastMessage - The last message to pre-fill the prompt with (optional).
+   * @returns The message entered by the user, or null if cancelled.
+   */
+  const promptForNewMessage = (lastMessage: string) => {
+    return prompt('Enter new message', lastMessage);
+  };
+
+  /**
+   * Updates the chat object by removing the last two messages.
+   *
+   * @param chat - The chat object containing messages.
+   * @returns A new chat object with the last two messages removed.
+   */
+  const updateChatMessages = (chat: Chat) => {
+    return produce(chat, (draft) => {
       draft.messages.splice(chat.messages.length - 2, 2);
     });
-
-    fetchAnswer(newChat, sentMessage);
   };
 
   /**
@@ -483,6 +524,16 @@ export default function useChats() {
   };
 
   /**
+   * Edits a message using a prompt.
+   * @param chatId
+   * @param messageId
+   * @param text
+   */
+  const editMessage = () => {
+    regenerate(true);
+  };
+
+  /**
    * Creates a clone of a chat.
    * @param chat The id of the chat to clone.
    */
@@ -518,6 +569,7 @@ export default function useChats() {
     isLoading,
     selectedModel,
     models,
+    totalTokenCount,
     viewOptions,
     options,
     newChat,
@@ -533,7 +585,7 @@ export default function useChats() {
     toggleViewOptions,
     updateOption,
     cloneChat,
-    totalTokenCount,
+    editMessage,
     restoreOptions,
   };
 }

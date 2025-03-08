@@ -18,6 +18,7 @@ function Main({
   updateOption,
   regenerate,
   restoreOptions,
+  editMessage,
 }: {
   activeChat: Chat | undefined;
   sendMessage: (message: string) => void;
@@ -31,6 +32,7 @@ function Main({
   updateOption: (target: string, value: string) => void;
   regenerate: () => void;
   restoreOptions: () => void;
+  editMessage: () => void;
 }) {
   return (
     <div className='relative flex w-full items-center justify-center'>
@@ -58,6 +60,7 @@ function Main({
               activeChat={activeChat}
               isLoading={isLoading}
               regenerate={regenerate}
+              editMessage={editMessage}
             />
           ) : (
             <ChatHeader />

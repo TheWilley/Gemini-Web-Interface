@@ -7,6 +7,7 @@ import {
   faClock,
   faCopy,
   faFingerprint,
+  faPen,
   faRotateRight,
 } from '@fortawesome/free-solid-svg-icons';
 import geminiLogo from '../assets/gemini.png';
@@ -32,10 +33,12 @@ function Messages({
   activeChat,
   isLoading,
   regenerate,
+  editMessage,
 }: {
   activeChat: Chat;
   isLoading: boolean;
   regenerate: () => void;
+  editMessage: () => void;
 }) {
   const scrollToBottomRef = useRef<null | HTMLDivElement>(null);
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
@@ -69,14 +72,25 @@ function Messages({
         <div
           key={message.id}
           className={classNames(
-            'mb-8 flex',
+            'group/message mb-8 flex',
             message.sender === 'self' ? 'justify-end' : 'justify-start'
           )}
         >
           <div
-            className={message.sender === 'ai' ? 'grid w-full grid-cols-[5%_95%]' : ''}
+            className={
+              message.sender === 'ai' ? 'grid w-full grid-cols-[5%_95%]' : 'flex'
+            }
           >
-            {message.sender === 'ai' && <img src={geminiLogo} width={30} />}
+            {message.sender === 'ai' ? (
+              <img src={geminiLogo} width={30} />
+            ) : (
+              <Button
+                onclick={() => editMessage()}
+                classes='mr-2 group-hover/message:opacity-100 opacity-0 transition-opacity'
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </Button>
+            )}
             <div
               className={classNames(
                 'group break-words rounded-2xl rounded-tr-sm p-3',
