@@ -1,3 +1,3 @@
 export default function uid() {
-  return Date.now() + Math.random().toString();
+  return Date.now() + Math.random().toString().replace('.', '');
 }
