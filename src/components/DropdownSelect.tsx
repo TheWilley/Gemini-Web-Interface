@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import classNames from '../utils/classNames';
+import useOutsideAlerter from '../hooks/useOutsideAlerter';
 
 function DropdownSelect({
   options,
@@ -20,7 +21,10 @@ function DropdownSelect({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => {
+    setIsOpen(false);
+  });
   useEffect(() => {
     const selected = options.find((option) => option.key === value);
     setSelectedOption(selected ? selected.name : null);
@@ -37,7 +41,7 @@ function DropdownSelect({
   };
 
   return (
-    <div className={classNames('relative', classes)}>
+    <div className={classNames('relative', classes)} ref={wrapperRef}>
       <Button onclick={toggleDropdown} bold strong>
         {selectedOption || 'Select an option'}
         <span className={`ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`}>

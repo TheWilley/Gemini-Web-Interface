@@ -1,6 +1,7 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import Button from './Button';
 import classNames from '../utils/classNames';
+import useOutsideAlerter from '../hooks/useOutsideAlerter';
 
 function Dropdown({
   options,
@@ -17,7 +18,10 @@ function Dropdown({
   classes?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => {
+    setIsOpen(false);
+  });
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -27,7 +31,7 @@ function Dropdown({
   };
 
   return (
-    <div className={classNames('relative', classes)}>
+    <div className={classNames('relative', classes)} ref={wrapperRef}>
       <Button onclick={toggleDropdown} bold strong>
         {text}
         <span className={`ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`}>
