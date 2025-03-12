@@ -142,8 +142,8 @@ export default function useChats() {
    * Makes all chats unactive.
    */
   const unactivateAllChats = () => {
-    setChats((prevChats) =>
-      prevChats.map((chat) => ({
+    setChats((draft) =>
+      draft.map((chat) => ({
         ...chat,
         active: false,
       }))
@@ -164,7 +164,7 @@ export default function useChats() {
     };
 
     unactivateAllChats();
-    setChats((prevChats) => [...prevChats, chat]);
+    setChats((draft) => [...draft, chat]);
     return chat;
   };
 
@@ -173,8 +173,8 @@ export default function useChats() {
    * @param chatId The id of the chat to activate.
    */
   const selectChat = (chatId: string) => {
-    setChats((prevChats) =>
-      prevChats.map((chat) => ({
+    setChats((draft) =>
+      draft.map((chat) => ({
         ...chat,
         active: chat.id === chatId,
       }))
