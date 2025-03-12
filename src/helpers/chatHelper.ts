@@ -55,6 +55,7 @@ export const addMessageToChat = (
       createdAt: Date.now(),
       sender,
       tokenCount: 0,
+      pinned: false,
     });
   });
 };
