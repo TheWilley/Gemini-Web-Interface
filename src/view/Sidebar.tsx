@@ -69,7 +69,7 @@ function Sidebar({
   return (
     <div
       className={classNames(
-        'flex h-screen flex-col overflow-y-auto overflow-x-hidden bg-overlay p-3 transition-all duration-300 ease-in-out',
+        'flex h-screen flex-col bg-overlay p-3 transition-all duration-300 ease-in-out',
         isCollapsed ? 'w-16' : 'w-96'
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -99,7 +99,7 @@ function Sidebar({
       <div className='mt-8 flex-grow text-sm'>
         <HideableBlock isHidden={isCollapsed || chatsInfo.length === 0}>
           <h2 className='mb-2 ml-2 text-sm font-bold text-text-strong'>Chats</h2>
-          <ul className='m-0 min-h-52 list-none'>
+          <ul className='m-0 list-none'>
             {chatsInfo.map((chatInfo) => (
               <li
                 key={chatInfo.id}
