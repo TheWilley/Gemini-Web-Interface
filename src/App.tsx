@@ -64,6 +64,7 @@ function App() {
           updateOption={updateOption}
           restoreOptions={restoreOptions}
           editMessage={editMessage}
+          cloneChat={cloneChat}
         />
       </Layout>
       <Notification />

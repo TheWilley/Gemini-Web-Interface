@@ -34,11 +34,13 @@ function Messages({
   isLoading,
   regenerate,
   editMessage,
+  cloneChat,
 }: {
   activeChat: Chat;
   isLoading: boolean;
   regenerate: () => void;
   editMessage: () => void;
+  cloneChat: (chatId: string, messageId?: string) => void;
 }) {
   const scrollToBottomRef = useRef<null | HTMLDivElement>(null);
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
@@ -122,6 +124,15 @@ function Messages({
                     <Tooltip position='bottom' text='Copy timestamp'>
                       <Button onclick={() => copy(message, 'time')}>
                         <FontAwesomeIcon icon={faClock} className='opacity-60' />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip position='bottom' text='Clone from this point'>
+                      <Button
+                        onclick={() => {
+                          cloneChat(activeChat.id, message.id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faCopy} className='opacity-60' />
                       </Button>
                     </Tooltip>
                     {index === activeChat.messages.length - 1 && (

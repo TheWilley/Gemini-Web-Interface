@@ -44,7 +44,7 @@ function Sidebar({
   deleteChat: (chatId: string) => void;
   editChatName: (chatId: string) => void;
   toggleViewOptions: () => void;
-  cloneChat: (chatId: string) => void;
+  cloneChat: (chatId: string, messageId?: string) => void;
   totalTokenCount: number;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);

@@ -420,17 +420,24 @@ export default function useChats() {
    * Creates a clone of a chat.
    * @param chat The id of the chat to clone.
    */
-  const cloneChat = (chatId: string) => {
+  const cloneChat = (chatId: string, messageId?: string) => {
     setChats((draft) => {
       const foundChat = draft.find((c) => c.id === chatId);
 
       if (foundChat) {
-        const newChat = produce(foundChat, (draft2) => {
-          draft2.id = uid();
-          draft2.name = draft2.name + ' (Copy)';
-          draft2.active = false;
-        });
-        draft.push(newChat);
+        const messageIndex = messageId
+          ? foundChat.messages.findIndex((m) => m.id === messageId)
+          : foundChat.messages.length;
+
+        if (messageIndex !== -1) {
+          const newChat = produce(foundChat, (draft2) => {
+            draft2.id = uid();
+            draft2.name = draft2.name + ' (Copy)';
+            draft2.active = false;
+            draft2.messages = draft2.messages.slice(0, messageIndex + 1);
+          });
+          draft.push(newChat);
+        }
       }
     });
   };

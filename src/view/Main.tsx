@@ -19,6 +19,7 @@ function Main({
   regenerate,
   restoreOptions,
   editMessage,
+  cloneChat,
 }: {
   activeChat: Chat | undefined;
   sendMessage: (message: string) => void;
@@ -33,6 +34,7 @@ function Main({
   regenerate: () => void;
   restoreOptions: () => void;
   editMessage: () => void;
+  cloneChat: (chatId: string, messageId?: string) => void;
 }) {
   return (
     <div className='relative flex w-full items-center justify-center'>
@@ -61,6 +63,7 @@ function Main({
               isLoading={isLoading}
               regenerate={regenerate}
               editMessage={editMessage}
+              cloneChat={cloneChat}
             />
           ) : (
             <ChatHeader />
