@@ -31,6 +31,7 @@ function App() {
     cloneChat,
     restoreOptions,
     editMessage,
+    togglePinMessage,
   } = useChats();
 
   return (
@@ -65,6 +66,7 @@ function App() {
           restoreOptions={restoreOptions}
           editMessage={editMessage}
           cloneChat={cloneChat}
+          togglePinMessage={togglePinMessage}
         />
       </Layout>
       <Notification />

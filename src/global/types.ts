@@ -40,6 +40,7 @@ export type Message = {
   createdAt: number;
   sender: 'self' | 'ai';
   tokenCount: number;
+  pinned: boolean;
 };
 
 export type Options = {

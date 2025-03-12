@@ -442,6 +442,20 @@ export default function useChats() {
     });
   };
 
+  const togglePinMessage = (chatId: string, messageId: string) => {
+    setChats((draft) => {
+      const foundChat = draft.find((c) => c.id === chatId);
+
+      if (foundChat) {
+        const foundMessage = foundChat.messages.find((m) => m.id === messageId);
+
+        if (foundMessage) {
+          foundMessage.pinned = !foundMessage.pinned;
+        }
+      }
+    });
+  };
+
   /**
    * Restores options to defaults.
    */
@@ -477,5 +491,6 @@ export default function useChats() {
     cloneChat,
     editMessage,
     restoreOptions,
+    togglePinMessage,
   };
 }

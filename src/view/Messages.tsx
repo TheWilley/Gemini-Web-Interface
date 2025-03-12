@@ -9,6 +9,8 @@ import {
   faFingerprint,
   faPen,
   faRotateRight,
+  faThumbTack,
+  faThumbTackSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import geminiLogo from '../assets/gemini.png';
 import { useCallback, useEffect, useRef } from 'react';
@@ -35,12 +37,14 @@ function Messages({
   regenerate,
   editMessage,
   cloneChat,
+  togglePinMessage,
 }: {
   activeChat: Chat;
   isLoading: boolean;
   regenerate: () => void;
   editMessage: () => void;
   cloneChat: (chatId: string, messageId?: string) => void;
+  togglePinMessage: (chatId: string, messageId: string) => void;
 }) {
   const scrollToBottomRef = useRef<null | HTMLDivElement>(null);
   const copy = useCallback((message: Message, type: 'chat' | 'id' | 'time') => {
@@ -94,6 +98,7 @@ function Messages({
               </Button>
             )}
             <div
+              id={message.id}
               className={classNames(
                 'group break-words rounded-2xl rounded-tr-sm p-3',
                 message.sender === 'self'
@@ -124,6 +129,21 @@ function Messages({
                     <Tooltip position='bottom' text='Copy timestamp'>
                       <Button onclick={() => copy(message, 'time')}>
                         <FontAwesomeIcon icon={faClock} className='opacity-60' />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip
+                      position='bottom'
+                      text={message.pinned ? 'Unpin  message' : 'Pin message'}
+                    >
+                      <Button
+                        onclick={() => {
+                          togglePinMessage(activeChat.id, message.id);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={message.pinned ? faThumbTackSlash : faThumbTack}
+                          className='opacity-60'
+                        />
                       </Button>
                     </Tooltip>
                     {index !== activeChat.messages.length - 1 && (
