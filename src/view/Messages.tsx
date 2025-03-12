@@ -126,15 +126,17 @@ function Messages({
                         <FontAwesomeIcon icon={faClock} className='opacity-60' />
                       </Button>
                     </Tooltip>
-                    <Tooltip position='bottom' text='Clone from this point'>
-                      <Button
-                        onclick={() => {
-                          cloneChat(activeChat.id, message.id);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faCopy} className='opacity-60' />
-                      </Button>
-                    </Tooltip>
+                    {index !== activeChat.messages.length - 1 && (
+                      <Tooltip position='bottom' text='Clone from this point'>
+                        <Button
+                          onclick={() => {
+                            cloneChat(activeChat.id, message.id);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faCopy} className='opacity-60' />
+                        </Button>
+                      </Tooltip>
+                    )}
                     {index === activeChat.messages.length - 1 && (
                       <Tooltip position='bottom' text='Regenerate'>
                         <Button onclick={() => regenerate()}>
