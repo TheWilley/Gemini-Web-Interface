@@ -15,6 +15,7 @@ import {
   updateMessageContent,
   updateMessageTokensCount,
 } from '../helpers/chatHelper';
+import { exportJson, importJson } from '../utils/exportDownload';
 
 /*/
   We're using a non-mutable approach to update messages in seperate objects, only reflecting the change to the chats state
@@ -342,23 +343,7 @@ export default function useChats() {
    * Exports chats as JSON.
    */
   const exportChats = () => {
-    const exportData = {
-      id: 'geminiChat',
-      chats: chats,
-      options: options,
-    };
-
-    const dataStr = JSON.stringify(exportData, null, 2);
-
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'chats.json';
-    a.click();
-
-    URL.revokeObjectURL(url);
+    exportJson({ chats, options }, 'geminiChat', 'chats.json');
   };
 
   /**
@@ -366,25 +351,10 @@ export default function useChats() {
    * @param file The chat file to import.
    */
   const importChats = (file: File) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      try {
-        const fileContent = reader.result as string;
-        const parsedData = JSON.parse(fileContent);
-
-        if (parsedData.id === 'geminiChat' && Array.isArray(parsedData.chats)) {
-          setChats(parsedData.chats);
-          setOptions(parsedData.options);
-        } else {
-          alert('Invalid file format or missing unique identifier.');
-        }
-      } catch (error) {
-        alert('Error reading or parsing the file.');
-      }
-    };
-
-    reader.readAsText(file);
+    importJson(file, 'geminiChat', (data) => {
+      setChats(data.chats as Chat[]);
+      setOptions(data.options as Options);
+    });
   };
 
   /**
