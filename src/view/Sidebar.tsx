@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import {
   faAlignLeft,
   faBars,
+  faClone,
   faCog,
-  faCopy,
   faFileExport,
   faFileImport,
   faPen,
@@ -89,7 +89,7 @@ function Sidebar({
       </div>
 
       <div className='mt-8'>
-        <Tooltip position='bottom' text='New chat' classes='max-w-full overflow-hidden'>
+        <Tooltip position='bottom' text='New chat' classes='max-w-full'>
           <Button onclick={() => newChat()} disabled={!chatIsSelected} strong bold>
             <IconWithElement icon={faPlus} text='New Chat' hideText={isCollapsed} />
           </Button>
@@ -151,7 +151,7 @@ function Sidebar({
                     },
                     {
                       key: 'clone',
-                      display: <IconWithElement icon={faCopy} text={'Clone'} />,
+                      display: <IconWithElement icon={faClone} text={'Clone'} />,
                       onclick() {
                         cloneChat(chatInfo.id);
                       },

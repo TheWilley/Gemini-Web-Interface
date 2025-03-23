@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClock,
+  faClone,
   faCopy,
   faFingerprint,
   faPen,
@@ -153,7 +154,7 @@ function Messages({
                             cloneChat(activeChat.id, message.id);
                           }}
                         >
-                          <FontAwesomeIcon icon={faCopy} className='opacity-60' />
+                          <FontAwesomeIcon icon={faClone} className='opacity-60' />
                         </Button>
                       </Tooltip>
                     )}
