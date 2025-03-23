@@ -44,7 +44,7 @@ function Main({
   return (
     <div className='relative flex w-full items-center justify-center'>
       <div className='absolute left-2 top-2'>
-        {!viewOptions && activeChat && (
+        {!viewOptions && (
           <div className='flex'>
             <DropdownSelect
               options={models}
@@ -53,7 +53,7 @@ function Main({
               }}
               value={selectedModel.key}
             />
-            {activeChat.messages.filter((m) => m.pinned).length > 0 && (
+            {activeChat && activeChat.messages.filter((m) => m.pinned).length > 0 && (
               <Dropdown
                 text='Pinned Messages'
                 options={activeChat.messages.map((m) => {
