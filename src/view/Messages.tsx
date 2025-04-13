@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import Markdown from 'react-markdown';
 import { Chat, Message } from '../global/types';
-import classNames from '../utils/classNames';
 import Button from '../components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -103,6 +103,126 @@ function MessageActions({
   );
 }
 
+function EditableMessage({
+  message,
+  onSave,
+  onCancel,
+}: {
+  message: Message;
+  onSave: (updatedText: string) => void;
+  onCancel: () => void;
+}) {
+  const [text, setText] = useState(message.text);
+
+  return (
+    <>
+      <div className='w-full'>
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          className='h-full min-h-36 w-full resize-none overflow-hidden rounded-lg border border-gray-500 bg-transparent p-2 hover:overflow-auto'
+          style={{
+            scrollbarWidth: 'initial',
+            scrollbarColor: 'gray transparent',
+            msOverflowStyle: 'none',
+          }}
+        />
+      </div>
+      <div className='mt-2 flex justify-end gap-2'>
+        <Button onclick={onCancel}>Cancel</Button>
+        <Button
+          onclick={() => onSave(text)}
+          classes='bg-blue-300 text-blue-800 hover:bg-blue-400'
+        >
+          Save
+        </Button>
+      </div>
+    </>
+  );
+}
+
+function UserMessage({
+  message,
+  isEditing,
+  onEdit,
+  onSave,
+  onCancel,
+  canBeEdited,
+}: {
+  message: Message;
+  isEditing: boolean;
+  onEdit: () => void;
+  onSave: (updatedText: string) => void;
+  onCancel: () => void;
+  canBeEdited?: boolean;
+}) {
+  return (
+    <div className='group-message flex justify-end'>
+      {canBeEdited && !isEditing && (
+        <Button
+          onclick={onEdit}
+          classes='mr-2 group-hover/message:opacity-100 opacity-0 transition-opacity'
+        >
+          <FontAwesomeIcon icon={faPen} />
+        </Button>
+      )}
+      {isEditing ? (
+        <div className='w-full'>
+          <EditableMessage message={message} onSave={onSave} onCancel={onCancel} />
+        </div>
+      ) : (
+        <div
+          id={message.id}
+          className='group max-w-96 justify-end whitespace-pre-wrap break-words rounded-2xl rounded-tr-sm bg-overlay p-3 text-text-strong'
+        >
+          {message.text}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AIMessage({
+  message,
+  isLoading,
+  isLastMessage,
+  activeChatId,
+  copy,
+  togglePinMessage,
+  cloneChat,
+  regenerate,
+}: {
+  message: Message;
+  isLoading: boolean;
+  isLastMessage: boolean;
+  activeChatId: string;
+  copy: (message: Message, type: 'chat' | 'id' | 'time') => void;
+  togglePinMessage: (chatId: string, messageId: string) => void;
+  cloneChat: (chatId: string, messageId?: string) => void;
+  regenerate: () => void;
+}) {
+  return (
+    <div className='grid w-full grid-cols-[5%_95%]'>
+      <img src={geminiLogo} width={30} />
+      <div
+        id={message.id}
+        className='bg-backgroun group prose prose-gray prose-invert max-w-full break-words rounded-2xl rounded-tr-sm p-3 leading-6'
+      >
+        {isLoading && isLastMessage ? <Skeleton /> : <Markdown>{message.text}</Markdown>}
+        <MessageActions
+          message={message}
+          activeChatId={activeChatId}
+          isLastMessage={isLastMessage}
+          copy={copy}
+          togglePinMessage={togglePinMessage}
+          cloneChat={cloneChat}
+          regenerate={regenerate}
+        />
+      </div>
+    </div>
+  );
+}
+
 function MessageItem({
   message,
   isLoading,
@@ -113,6 +233,7 @@ function MessageItem({
   cloneChat,
   regenerate,
   editMessage,
+  canBeEdited,
 }: {
   message: Message;
   isLoading: boolean;
@@ -122,60 +243,39 @@ function MessageItem({
   togglePinMessage: (chatId: string, messageId: string) => void;
   cloneChat: (chatId: string, messageId?: string) => void;
   regenerate: () => void;
-  editMessage: () => void;
+  editMessage: (updatedText: string) => void;
+  canBeEdited: boolean;
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSave = (updatedText: string) => {
+    editMessage(updatedText);
+    setIsEditing(false);
+  };
+
   return (
-    <div
-      key={message.id}
-      className={classNames(
-        'group/message mb-8 flex',
-        message.sender === 'self' ? 'justify-end' : 'justify-start'
+    <div className='group/message'>
+      {message.sender === 'self' ? (
+        <UserMessage
+          message={message}
+          isEditing={isEditing}
+          onEdit={() => setIsEditing(true)}
+          onSave={handleSave}
+          onCancel={() => setIsEditing(false)}
+          canBeEdited={canBeEdited}
+        />
+      ) : (
+        <AIMessage
+          message={message}
+          isLoading={isLoading}
+          isLastMessage={isLastMessage}
+          activeChatId={activeChatId}
+          copy={copy}
+          togglePinMessage={togglePinMessage}
+          cloneChat={cloneChat}
+          regenerate={regenerate}
+        />
       )}
-    >
-      <div
-        className={message.sender === 'ai' ? 'grid w-full grid-cols-[5%_95%]' : 'flex'}
-      >
-        {message.sender === 'ai' ? (
-          <img src={geminiLogo} width={30} />
-        ) : (
-          <Button
-            onclick={() => editMessage()}
-            classes='mr-2 group-hover/message:opacity-100 opacity-0 transition-opacity'
-          >
-            <FontAwesomeIcon icon={faPen} />
-          </Button>
-        )}
-        <div
-          id={message.id}
-          className={classNames(
-            'group break-words rounded-2xl rounded-tr-sm p-3',
-            message.sender === 'self'
-              ? 'max-w-96 justify-end bg-overlay text-text-strong'
-              : 'bg-backgroun prose prose-gray prose-invert max-w-full leading-6'
-          )}
-        >
-          {message.sender === 'self' ? (
-            message.text
-          ) : (
-            <>
-              {isLoading && isLastMessage ? (
-                <Skeleton />
-              ) : (
-                <Markdown>{message.text}</Markdown>
-              )}
-              <MessageActions
-                message={message}
-                activeChatId={activeChatId}
-                isLastMessage={isLastMessage}
-                copy={copy}
-                togglePinMessage={togglePinMessage}
-                cloneChat={cloneChat}
-                regenerate={regenerate}
-              />
-            </>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
@@ -191,7 +291,7 @@ function Messages({
   activeChat: Chat;
   isLoading: boolean;
   regenerate: () => void;
-  editMessage: () => void;
+  editMessage: (updatedText: string) => void;
   cloneChat: (chatId: string, messageId?: string) => void;
   togglePinMessage: (chatId: string, messageId: string) => void;
 }) {
@@ -235,6 +335,7 @@ function Messages({
           cloneChat={cloneChat}
           regenerate={regenerate}
           editMessage={editMessage}
+          canBeEdited={index === activeChat.messages.length - 2}
         />
       ))}
       <div id='scollToBottom' ref={scrollToBottomRef} />

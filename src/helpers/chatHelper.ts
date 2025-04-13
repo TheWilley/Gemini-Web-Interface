@@ -3,16 +3,6 @@ import { Chat } from '../global/types';
 import uid from '../utils/uid';
 
 /**
- * Prompts the user to input a new message, optionally pre-filling it with the provided last message.
- *
- * @param lastMessage - The last message to pre-fill the prompt with (optional).
- * @returns The message entered by the user, or null if cancelled.
- */
-export const promptForNewMessage = (lastMessage: string) => {
-  return prompt('Enter new message', lastMessage);
-};
-
-/**
  * Updates the chat object by removing the last two messages.
  *
  * @param chat - The chat object containing messages.

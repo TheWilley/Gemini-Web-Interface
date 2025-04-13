@@ -10,7 +10,6 @@ import textIsNotBlank from '../utils/textIsNotBlank';
 import {
   addMessageToChat,
   getLastSentMessage,
-  promptForNewMessage,
   updateChatMessages,
   updateMessageContent,
   updateMessageTokensCount,
@@ -195,8 +194,9 @@ export default function useChats() {
    * Regenerates the chat's answer by either editing the last message or using the last sent message.
    *
    * @param edit - If true, prompts the user to edit the last message. Defaults to false.
+   * @param updatedMessage - The updated message to send. Only used if 'edit' is true.
    */
-  const regenerate = (edit = false) => {
+  const regenerate = (edit = false, updatedMessage?: string) => {
     const chat = activeChat || createChat();
 
     // Get the second-to-last message text
@@ -204,7 +204,7 @@ export default function useChats() {
 
     if (lastSentMessage) {
       // Prompt for a new message if 'edit' is true
-      const sentMessage = edit ? promptForNewMessage(lastSentMessage) : lastSentMessage;
+      const sentMessage = edit ? updatedMessage : lastSentMessage;
 
       if (sentMessage) {
         const updatedChat = updateChatMessages(chat);
@@ -408,12 +408,10 @@ export default function useChats() {
 
   /**
    * Edits a message using a prompt.
-   * @param chatId
-   * @param messageId
-   * @param text
+   * @param updatedMessage The updated message to set.
    */
-  const editMessage = () => {
-    regenerate(true);
+  const editMessage = (updatedMessage: string) => {
+    regenerate(true, updatedMessage);
   };
 
   /**
