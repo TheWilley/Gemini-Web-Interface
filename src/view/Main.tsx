@@ -37,7 +37,7 @@ function Main({
   updateOption: (target: string, value: string) => void;
   regenerate: () => void;
   restoreOptions: () => void;
-  editMessage: () => void;
+  editMessage: (updatedMessage: string) => void;
   cloneChat: (chatId: string, messageId?: string) => void;
   togglePinMessage: (chatId: string, messageId: string) => void;
 }) {
