@@ -69,7 +69,7 @@ function Sidebar({
   return (
     <div
       className={classNames(
-        'flex h-screen flex-col bg-overlay p-3 transition-all duration-300 ease-in-out',
+        'flex h-full min-h-screen flex-col bg-overlay p-3 transition-all duration-300 ease-in-out',
         isCollapsed ? 'w-16' : 'w-96'
       )}
       onMouseEnter={() => setIsHovered(true)}

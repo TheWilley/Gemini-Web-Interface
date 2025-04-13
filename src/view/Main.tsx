@@ -42,7 +42,7 @@ function Main({
   togglePinMessage: (chatId: string, messageId: string) => void;
 }) {
   return (
-    <div className='relative flex w-full items-center justify-center'>
+    <div className='sticky top-0 flex h-fit w-full justify-center'>
       <div className='absolute left-2 top-2'>
         {!viewOptions && (
           <div className='flex'>
