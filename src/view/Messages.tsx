@@ -32,6 +32,154 @@ function Skeleton() {
   );
 }
 
+function MessageActions({
+  message,
+  activeChatId,
+  isLastMessage,
+  copy,
+  togglePinMessage,
+  cloneChat,
+  regenerate,
+}: {
+  message: Message;
+  activeChatId: string;
+  isLastMessage: boolean;
+  copy: (message: Message, type: 'chat' | 'id' | 'time') => void;
+  togglePinMessage: (chatId: string, messageId: string) => void;
+  cloneChat: (chatId: string, messageId?: string) => void;
+  regenerate: () => void;
+}) {
+  return (
+    <div className='flex items-center opacity-0 transition-opacity group-hover:opacity-100'>
+      <Tooltip position='bottom' text='Copy text'>
+        <Button onclick={() => copy(message, 'chat')}>
+          <FontAwesomeIcon icon={faCopy} className='opacity-60' />
+        </Button>
+      </Tooltip>
+      <Tooltip position='bottom' text='Copy ID'>
+        <Button onclick={() => copy(message, 'id')}>
+          <FontAwesomeIcon icon={faFingerprint} className='opacity-60' />
+        </Button>
+      </Tooltip>
+      <Tooltip position='bottom' text='Copy timestamp'>
+        <Button onclick={() => copy(message, 'time')}>
+          <FontAwesomeIcon icon={faClock} className='opacity-60' />
+        </Button>
+      </Tooltip>
+      <Tooltip position='bottom' text={message.pinned ? 'Unpin message' : 'Pin message'}>
+        <Button
+          onclick={() => {
+            togglePinMessage(activeChatId, message.id);
+          }}
+        >
+          <FontAwesomeIcon
+            icon={message.pinned ? faThumbTackSlash : faThumbTack}
+            className='opacity-60'
+          />
+        </Button>
+      </Tooltip>
+      {!isLastMessage && (
+        <Tooltip position='bottom' text='Clone from this point'>
+          <Button
+            onclick={() => {
+              cloneChat(activeChatId, message.id);
+            }}
+          >
+            <FontAwesomeIcon icon={faClone} className='opacity-60' />
+          </Button>
+        </Tooltip>
+      )}
+      {isLastMessage && (
+        <Tooltip position='bottom' text='Regenerate'>
+          <Button onclick={() => regenerate()}>
+            <FontAwesomeIcon icon={faRotateRight} className='opacity-60' />
+          </Button>
+        </Tooltip>
+      )}
+      <span className='ml-auto hidden opacity-60 sm:block'>
+        {message.tokenCount || '0'} tokens
+      </span>
+    </div>
+  );
+}
+
+function MessageItem({
+  message,
+  isLoading,
+  isLastMessage,
+  activeChatId,
+  copy,
+  togglePinMessage,
+  cloneChat,
+  regenerate,
+  editMessage,
+}: {
+  message: Message;
+  isLoading: boolean;
+  isLastMessage: boolean;
+  activeChatId: string;
+  copy: (message: Message, type: 'chat' | 'id' | 'time') => void;
+  togglePinMessage: (chatId: string, messageId: string) => void;
+  cloneChat: (chatId: string, messageId?: string) => void;
+  regenerate: () => void;
+  editMessage: () => void;
+}) {
+  return (
+    <div
+      key={message.id}
+      className={classNames(
+        'group/message mb-8 flex',
+        message.sender === 'self' ? 'justify-end' : 'justify-start'
+      )}
+    >
+      <div
+        className={message.sender === 'ai' ? 'grid w-full grid-cols-[5%_95%]' : 'flex'}
+      >
+        {message.sender === 'ai' ? (
+          <img src={geminiLogo} width={30} />
+        ) : (
+          <Button
+            onclick={() => editMessage()}
+            classes='mr-2 group-hover/message:opacity-100 opacity-0 transition-opacity'
+          >
+            <FontAwesomeIcon icon={faPen} />
+          </Button>
+        )}
+        <div
+          id={message.id}
+          className={classNames(
+            'group break-words rounded-2xl rounded-tr-sm p-3',
+            message.sender === 'self'
+              ? 'max-w-96 justify-end bg-overlay text-text-strong'
+              : 'bg-backgroun prose prose-gray prose-invert max-w-full leading-6'
+          )}
+        >
+          {message.sender === 'self' ? (
+            message.text
+          ) : (
+            <>
+              {isLoading && isLastMessage ? (
+                <Skeleton />
+              ) : (
+                <Markdown>{message.text}</Markdown>
+              )}
+              <MessageActions
+                message={message}
+                activeChatId={activeChatId}
+                isLastMessage={isLastMessage}
+                copy={copy}
+                togglePinMessage={togglePinMessage}
+                cloneChat={cloneChat}
+                regenerate={regenerate}
+              />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Messages({
   activeChat,
   isLoading,
@@ -76,104 +224,18 @@ function Messages({
   return (
     <>
       {activeChat.messages.map((message, index) => (
-        <div
+        <MessageItem
           key={message.id}
-          className={classNames(
-            'group/message mb-8 flex',
-            message.sender === 'self' ? 'justify-end' : 'justify-start'
-          )}
-        >
-          <div
-            className={
-              message.sender === 'ai' ? 'grid w-full grid-cols-[5%_95%]' : 'flex'
-            }
-          >
-            {message.sender === 'ai' ? (
-              <img src={geminiLogo} width={30} />
-            ) : (
-              <Button
-                onclick={() => editMessage()}
-                classes='mr-2 group-hover/message:opacity-100 opacity-0 transition-opacity'
-              >
-                <FontAwesomeIcon icon={faPen} />
-              </Button>
-            )}
-            <div
-              id={message.id}
-              className={classNames(
-                'group break-words rounded-2xl rounded-tr-sm p-3',
-                message.sender === 'self'
-                  ? 'max-w-96 justify-end bg-overlay text-text-strong'
-                  : 'bg-backgroun prose prose-gray prose-invert max-w-full leading-6'
-              )}
-            >
-              {message.sender === 'self' ? (
-                message.text
-              ) : (
-                <>
-                  {isLoading && index === activeChat.messages.length - 1 ? (
-                    <Skeleton />
-                  ) : (
-                    <Markdown>{message.text}</Markdown>
-                  )}
-                  <div className='flex items-center opacity-0 transition-opacity group-hover:opacity-100'>
-                    <Tooltip position='bottom' text='Copy text'>
-                      <Button onclick={() => copy(message, 'chat')}>
-                        <FontAwesomeIcon icon={faCopy} className='opacity-60' />
-                      </Button>
-                    </Tooltip>
-                    <Tooltip position='bottom' text='Copy ID'>
-                      <Button onclick={() => copy(message, 'id')}>
-                        <FontAwesomeIcon icon={faFingerprint} className='opacity-60' />
-                      </Button>
-                    </Tooltip>
-                    <Tooltip position='bottom' text='Copy timestamp'>
-                      <Button onclick={() => copy(message, 'time')}>
-                        <FontAwesomeIcon icon={faClock} className='opacity-60' />
-                      </Button>
-                    </Tooltip>
-                    <Tooltip
-                      position='bottom'
-                      text={message.pinned ? 'Unpin  message' : 'Pin message'}
-                    >
-                      <Button
-                        onclick={() => {
-                          togglePinMessage(activeChat.id, message.id);
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={message.pinned ? faThumbTackSlash : faThumbTack}
-                          className='opacity-60'
-                        />
-                      </Button>
-                    </Tooltip>
-                    {index !== activeChat.messages.length - 1 && (
-                      <Tooltip position='bottom' text='Clone from this point'>
-                        <Button
-                          onclick={() => {
-                            cloneChat(activeChat.id, message.id);
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faClone} className='opacity-60' />
-                        </Button>
-                      </Tooltip>
-                    )}
-                    {index === activeChat.messages.length - 1 && (
-                      <Tooltip position='bottom' text='Regenerate'>
-                        <Button onclick={() => regenerate()}>
-                          <FontAwesomeIcon icon={faRotateRight} className='opacity-60' />
-                        </Button>
-                      </Tooltip>
-                    )}
-                    <span className='ml-auto hidden opacity-60 sm:block'>
-                      {message.tokenCount || '0'} tokens
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+          message={message}
+          isLoading={isLoading}
+          isLastMessage={index === activeChat.messages.length - 1}
+          activeChatId={activeChat.id}
+          copy={copy}
+          togglePinMessage={togglePinMessage}
+          cloneChat={cloneChat}
+          regenerate={regenerate}
+          editMessage={editMessage}
+        />
       ))}
       <div id='scollToBottom' ref={scrollToBottomRef} />
     </>
