@@ -120,7 +120,7 @@ function EditableMessage({
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className='h-full min-h-36 w-full resize-none overflow-hidden rounded-lg border border-gray-500 bg-transparent p-2 hover:overflow-auto'
+          className='h-full min-h-36 w-full resize-none overflow-hidden rounded-lg border border-gray-500 bg-transparent p-2 text-white hover:overflow-auto'
           style={{
             scrollbarWidth: 'initial',
             scrollbarColor: 'gray transparent',
