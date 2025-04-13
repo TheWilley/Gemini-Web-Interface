@@ -157,7 +157,7 @@ function UserMessage({
   canBeEdited?: boolean;
 }) {
   return (
-    <div className='group-message flex justify-end'>
+    <div className='group-message mb-12 flex justify-end'>
       {canBeEdited && !isEditing && (
         <Button
           onclick={onEdit}
