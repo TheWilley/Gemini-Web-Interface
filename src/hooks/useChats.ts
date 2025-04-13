@@ -419,6 +419,8 @@ export default function useChats() {
    * @param chat The id of the chat to clone.
    */
   const cloneChat = (chatId: string, messageId?: string) => {
+    const newId = uid();
+
     setChats((draft) => {
       const foundChat = draft.find((c) => c.id === chatId);
 
@@ -429,7 +431,7 @@ export default function useChats() {
 
         if (messageIndex !== -1) {
           const newChat = produce(foundChat, (draft2) => {
-            draft2.id = uid();
+            draft2.id = newId;
             draft2.name = draft2.name + ' (Copy)';
             draft2.active = false;
             draft2.messages = draft2.messages.slice(0, messageIndex + 1);
@@ -438,6 +440,7 @@ export default function useChats() {
         }
       }
     });
+    selectChat(newId);
   };
 
   const togglePinMessage = (chatId: string, messageId: string) => {
